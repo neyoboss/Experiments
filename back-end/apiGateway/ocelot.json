@@ -1,0 +1,18 @@
+{
+    "Routes":[
+        {
+            "UpstreamPathTemplate":"/api/{everything}",
+            "DownstreamScheme":"http",
+            "DownstreamHostAndPorts":[
+                {
+                    "Host":"profile-service",
+                    "Port":80
+                }
+            ],
+            "DownstreamPathTemplate":"/api/{everything}"
+        }
+    ],
+    "GlobalConfiguration":{
+        "BaseUrl":"http://+:8000"
+    }
+}

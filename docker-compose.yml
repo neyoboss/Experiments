@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  profile-service:
+    image: profileservice
+    container_name: profile-service
+    build:
+      context: ./back-end/profile-service/
+    restart: on-failure
+  
+  apiGateway:
+    image: apigateway
+    container_name: api-gateway
+    build:
+      context: ./back-end/apiGateway/
+    ports:
+      - 7000:80
