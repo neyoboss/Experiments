@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Tender\\back-end\\profile-service\\profile-service.csproj": {}
+    "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\profile-service\\profile-service.csproj": {}
   },
   "projects": {
-    "E:\\Tender\\back-end\\profile-service\\profile-service.csproj": {
+    "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\profile-service\\profile-service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Tender\\back-end\\profile-service\\profile-service.csproj",
+        "projectUniqueName": "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\profile-service\\profile-service.csproj",
         "projectName": "profile-service",
-        "projectPath": "E:\\Tender\\back-end\\profile-service\\profile-service.csproj",
-        "packagesPath": "C:\\Users\\Neyko\\.nuget\\packages\\",
-        "outputPath": "E:\\Tender\\back-end\\profile-service\\obj\\",
+        "projectPath": "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\profile-service\\profile-service.csproj",
+        "packagesPath": "C:\\Users\\neyko.000\\.nuget\\packages\\",
+        "outputPath": "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\profile-service\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "E:\\Visual Studio\\SDK_Tools_etc\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Neyko\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\neyko.000\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +27,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -57,6 +57,10 @@
               "target": "Package",
               "version": "[2.19.0, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "RabbitMQ.Client": {
               "target": "Package",
               "version": "[6.5.0, )"
@@ -85,7 +89,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

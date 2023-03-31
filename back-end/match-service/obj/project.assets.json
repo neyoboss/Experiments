@@ -335,23 +335,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Neyko\\.nuget\\packages\\": {},
-    "E:\\Visual Studio\\SDK_Tools_etc\\NuGetPackages": {}
+    "C:\\Users\\neyko.000\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Tender\\back-end\\match-service\\match-service.csproj",
+      "projectUniqueName": "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\match-service\\match-service.csproj",
       "projectName": "match-service",
-      "projectPath": "E:\\Tender\\back-end\\match-service\\match-service.csproj",
-      "packagesPath": "C:\\Users\\Neyko\\.nuget\\packages\\",
-      "outputPath": "E:\\Tender\\back-end\\match-service\\obj\\",
+      "projectPath": "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\match-service\\match-service.csproj",
+      "packagesPath": "C:\\Users\\neyko.000\\.nuget\\packages\\",
+      "outputPath": "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\match-service\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "E:\\Visual Studio\\SDK_Tools_etc\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Neyko\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\neyko.000\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -360,7 +362,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -407,7 +408,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

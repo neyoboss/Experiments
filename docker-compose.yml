@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services:
   profile-service:
@@ -6,7 +6,11 @@ services:
     container_name: profile-service
     build:
       context: ./back-end/profile-service/
+    environment:
+      - MongoDbSettings_DatabaseName=Tender
+      - MongoDbSettings_ConnectionString=${DB_URL_TENDER}
     restart: on-failure
+    depends_on: rabbitmq
   
   apiGateway:
     image: apigateway
@@ -15,3 +19,16 @@ services:
       context: ./back-end/apiGateway/
     ports:
       - 7000:80
+  
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    hostname: rabbitmq
+    container_name: rabbitmq
+    ports:
+    - 5656:5656
+    - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 10s
+      retries: 2
