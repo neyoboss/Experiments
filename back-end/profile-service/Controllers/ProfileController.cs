@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 public class ProfileController : ControllerBase
 {
     IProfileService profileService;
+    IRabbitMQProducer rabbitMQProducer;
 
-    public ProfileController(IProfileService profileService)
+    public ProfileController(IProfileService profileService, IRabbitMQProducer rabbitMQProducer)
     {
         this.profileService = profileService;
+        this.rabbitMQProducer = rabbitMQProducer;
     }
 
     [HttpGet("api/getAllProfiles")]
@@ -43,6 +45,7 @@ public class ProfileController : ControllerBase
     {
         try
         {
+            rabbitMQProducer.SendMessage("Profile get by id");
             return Ok(await profileService.GetProfileById(id));
         }
         catch (Exception ex)
@@ -52,11 +55,29 @@ public class ProfileController : ControllerBase
         }
     }
 
+    [HttpGet("api/sendMessage")]
+    public ActionResult<string> SendMessage()
+    {
+        rabbitMQProducer.SendMessage("Hello");
+        return "Message send";
+    }
+
     [HttpPost("api/registerProfile")]
     public async Task<ActionResult<ProfileModel>> RegisterProfile(ProfileModelDTO profile)
     {
-        var addProfile = await profileService.RegisterProfile(profile);
-        return Ok(addProfile);
+        try
+        {
+            var addProfile = await profileService.RegisterProfile(profile);
+            rabbitMQProducer.SendMessage(profile);
+
+            return Ok(addProfile);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                $"Error registering profile: {e.Message}");
+        }
+
     }
 
     [HttpPut("api/updateProfile")]

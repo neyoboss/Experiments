@@ -32,3 +32,32 @@ D:\Neyko Neykov\New folder\TenderProject\back-end\match-service\obj\Debug\net6.0
 D:\Neyko Neykov\New folder\TenderProject\back-end\match-service\obj\Debug\net6.0\match-service.pdb
 D:\Neyko Neykov\New folder\TenderProject\back-end\match-service\obj\Debug\net6.0\match-service.genruntimeconfig.cache
 D:\Neyko Neykov\New folder\TenderProject\back-end\match-service\obj\Debug\net6.0\ref\match-service.dll
+E:\Tender\back-end\match-service\bin\Debug\net6.0\appsettings.Development.json
+E:\Tender\back-end\match-service\bin\Debug\net6.0\appsettings.json
+E:\Tender\back-end\match-service\bin\Debug\net6.0\match-service.exe
+E:\Tender\back-end\match-service\bin\Debug\net6.0\match-service.deps.json
+E:\Tender\back-end\match-service\bin\Debug\net6.0\match-service.runtimeconfig.json
+E:\Tender\back-end\match-service\bin\Debug\net6.0\match-service.dll
+E:\Tender\back-end\match-service\bin\Debug\net6.0\match-service.pdb
+E:\Tender\back-end\match-service\bin\Debug\net6.0\Microsoft.OpenApi.dll
+E:\Tender\back-end\match-service\bin\Debug\net6.0\RabbitMQ.Client.dll
+E:\Tender\back-end\match-service\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\Tender\back-end\match-service\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\Tender\back-end\match-service\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\Tender\back-end\match-service\bin\Debug\net6.0\System.Threading.Channels.dll
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.csproj.AssemblyReference.cache
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.GeneratedMSBuildEditorConfig.editorconfig
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.AssemblyInfoInputs.cache
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.AssemblyInfo.cs
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.csproj.CoreCompileInputs.cache
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.MvcApplicationPartsAssemblyInfo.cs
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.MvcApplicationPartsAssemblyInfo.cache
+E:\Tender\back-end\match-service\obj\Debug\net6.0\staticwebassets.build.json
+E:\Tender\back-end\match-service\obj\Debug\net6.0\staticwebassets.development.json
+E:\Tender\back-end\match-service\obj\Debug\net6.0\scopedcss\bundle\match-service.styles.css
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.csproj.CopyComplete
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.dll
+E:\Tender\back-end\match-service\obj\Debug\net6.0\refint\match-service.dll
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.pdb
+E:\Tender\back-end\match-service\obj\Debug\net6.0\match-service.genruntimeconfig.cache
+E:\Tender\back-end\match-service\obj\Debug\net6.0\ref\match-service.dll

@@ -12,6 +12,13 @@ services:
     restart: on-failure
     depends_on: rabbitmq
   
+  match-service:
+    image: matchservice
+    container_name: match-service
+    build:
+      context: ./back-end/match-service/
+    restart: on-failure
+
   apiGateway:
     image: apigateway
     container_name: api-gateway
@@ -25,8 +32,8 @@ services:
     hostname: rabbitmq
     container_name: rabbitmq
     ports:
-    - 5656:5656
     - 15672:15672
+    - 5672:5672
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 5s

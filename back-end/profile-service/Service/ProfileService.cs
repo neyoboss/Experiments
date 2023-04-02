@@ -19,19 +19,17 @@ public class ProfileService : IProfileService
     public async Task<List<string>> GetImagesFromAzureBlobOnId(string profileId)
     {
         BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profileId);
-        
+
         List<string> imageUrls = new List<string>();
         await foreach (var item in containerClient.GetBlobsAsync())
         {
-            // if (item.Name.StartsWith(profileId))
-            // {
-                BlobClient blobClient = containerClient.GetBlobClient(item.Name);
-                imageUrls.Add(blobClient.Uri.AbsoluteUri);
-            //}
+            BlobClient blobClient = containerClient.GetBlobClient(item.Name);
+            imageUrls.Add(blobClient.Uri.AbsoluteUri);
         }
         return imageUrls;
     }
 
+    #region AddImageToAzure
     public async void AddImagesToAzureBlolb(string profileId, byte[] imageBytes)
     {
         BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profileId);
@@ -39,7 +37,8 @@ public class ProfileService : IProfileService
         BlobClient blobClient = containerClient.GetBlobClient(imageName);
         await blobClient.UploadAsync(new MemoryStream(imageBytes), new BlobHttpHeaders { ContentType = "image/jpeg" });
     }
-
+    #endregion
+    #region RegisterProfile
     public async Task<ProfileModel> RegisterProfile(ProfileModelDTO profileDTO)
     {
         var profileModel = new ProfileModel
@@ -52,15 +51,27 @@ public class ProfileService : IProfileService
         await collection.InsertOneAsync(profileModel);
         return profileModel;
     }
-
+    #endregion
+    #region DeleteProfile
     public async Task<bool> DeleteProfile(Guid id)
     {
         return (await collection.DeleteOneAsync(profile => profile.id == id)).DeletedCount > 0;
     }
-
+    #endregion
     public async Task<ProfileModel> GetProfileById(Guid id)
     {
-        return await collection.Find(profile => profile.id == id).FirstOrDefaultAsync();
+        var profile = await collection.Find(profile => profile.id == id).FirstOrDefaultAsync();
+        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profile.id.ToString());
+        
+        // List<string> imageUrls = new List<string>();
+        // await foreach (var item in containerClient.GetBlobsAsync())
+        // {
+        //     BlobClient blobClient = containerClient.GetBlobClient(item.Name);
+        //     imageUrls.Add(blobClient.Uri.AbsoluteUri);
+        // }
+        // profile.images = imageUrls;
+
+        return profile;
     }
 
     public async Task<List<ProfileModel>> GetProfiles()

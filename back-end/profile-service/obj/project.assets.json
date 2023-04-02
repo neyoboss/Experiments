@@ -1670,25 +1670,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\neyko.000\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Neyko\\.nuget\\packages\\": {},
+    "E:\\Visual Studio\\SDK_Tools_etc\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\profile-service\\profile-service.csproj",
+      "projectUniqueName": "E:\\Tender\\back-end\\profile-service\\profile-service.csproj",
       "projectName": "profile-service",
-      "projectPath": "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\profile-service\\profile-service.csproj",
-      "packagesPath": "C:\\Users\\neyko.000\\.nuget\\packages\\",
-      "outputPath": "D:\\Neyko Neykov\\New folder\\TenderProject\\back-end\\profile-service\\obj\\",
+      "projectPath": "E:\\Tender\\back-end\\profile-service\\profile-service.csproj",
+      "packagesPath": "C:\\Users\\Neyko\\.nuget\\packages\\",
+      "outputPath": "E:\\Tender\\back-end\\profile-service\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "E:\\Visual Studio\\SDK_Tools_etc\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\neyko.000\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Neyko\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1697,6 +1695,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1759,7 +1758,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

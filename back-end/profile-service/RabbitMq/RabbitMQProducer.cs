@@ -6,22 +6,32 @@ public class RabbitMQProducer : IRabbitMQProducer
 {
     public void SendMessage<T>(T message)
     {
-        var factory = new ConnectionFactory { HostName = "localhost" };
+        ConnectionFactory factory = new();
+        factory.Uri = new Uri("amqp://guest:guest@localhost:5672");
+        factory.ClientProvidedName = "Tender/Profile-Service";
 
         var connection = factory.CreateConnection();
 
         using (var channel = connection.CreateModel())
         {
-            channel.QueueDeclare("profile",
-            durable: true,
+            string exchangeName = "ProfileExchange";
+            string routingKey = "profile";
+            string queueName = "ProfileQueue";
+
+            channel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
+
+            channel.QueueDeclare(queueName,
+            durable: false,
             exclusive: false,
             autoDelete: false,
             arguments: null);
 
+            channel.QueueBind(queueName, exchangeName, routingKey, null);
+
             var json = JsonConvert.SerializeObject(message);
             var messageBody = Encoding.UTF8.GetBytes(json);
 
-            channel.BasicPublish(exchange: "", routingKey: "profile", body: messageBody);
+            channel.BasicPublish(exchangeName, routingKey, null, messageBody);
         }
     }
 }

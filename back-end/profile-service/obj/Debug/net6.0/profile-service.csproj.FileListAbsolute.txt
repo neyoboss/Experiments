@@ -100,3 +100,6 @@ D:\Neyko Neykov\New folder\TenderProject\back-end\profile-service\obj\Debug\net6
 D:\Neyko Neykov\New folder\TenderProject\back-end\profile-service\obj\Debug\net6.0\profile-service.genruntimeconfig.cache
 D:\Neyko Neykov\New folder\TenderProject\back-end\profile-service\obj\Debug\net6.0\ref\profile-service.dll
 D:\Neyko Neykov\New folder\TenderProject\back-end\profile-service\bin\Debug\net6.0\Newtonsoft.Json.dll
+E:\Tender\back-end\profile-service\bin\Debug\net6.0\Newtonsoft.Json.dll
+E:\Tender\back-end\profile-service\bin\Debug\net6.0\RabbitMQ.Client.dll
+E:\Tender\back-end\profile-service\bin\Debug\net6.0\System.Threading.Channels.dll
