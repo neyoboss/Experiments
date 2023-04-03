@@ -10,14 +10,17 @@ services:
       - MongoDbSettings_DatabaseName=Tender
       - MongoDbSettings_ConnectionString=${DB_URL_TENDER}
     restart: on-failure
-    depends_on: rabbitmq
+    depends_on:
+     - rabbitmq
   
-  match-service:
-    image: matchservice
-    container_name: match-service
-    build:
-      context: ./back-end/match-service/
-    restart: on-failure
+  # match-service:
+  #   image: matchservice
+  #   container_name: match-service
+  #   build:
+  #     context: ./back-end/match-service/
+  #   restart: on-failure
+  #   depends_on:
+  #     - rabbitmq
 
   apiGateway:
     image: apigateway
