@@ -7,20 +7,20 @@ services:
     build:
       context: ./back-end/profile-service/
     environment:
-      - MongoDbSettings_DatabaseName=Tender
+      - MongoDbSettings_DatabaseName=${DB_NAME}
       - MongoDbSettings_ConnectionString=${DB_URL_TENDER}
     restart: on-failure
     depends_on:
      - rabbitmq
   
-  # match-service:
-  #   image: matchservice
-  #   container_name: match-service
-  #   build:
-  #     context: ./back-end/match-service/
-  #   restart: on-failure
-  #   depends_on:
-  #     - rabbitmq
+  match-service:
+    image: matchservice
+    container_name: match-service
+    build:
+      context: ./back-end/match-service/
+    restart: on-failure
+    depends_on:
+      - rabbitmq
 
   apiGateway:
     image: apigateway
