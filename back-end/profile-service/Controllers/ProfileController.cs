@@ -68,7 +68,7 @@ public class ProfileController : ControllerBase
         try
         {
             var addProfile = await profileService.RegisterProfile(profile);
-            rabbitMQProducer.SendMessage(profile);
+            //rabbitMQProducer.SendMessage(profile);
 
             return Ok(addProfile);
         }
