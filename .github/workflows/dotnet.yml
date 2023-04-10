@@ -17,21 +17,20 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-        
-    - name: Restore dependencies
-      run: dotnet restore
-    
+
     - name: Build and test profile-service
       run: |
         cd back-end/profile-service
+        dotnet restore
         dotnet build --configuration Release
         cd ../test/ProfileServiceTest
         dotnet test --logger "console;verbosity=detailed"
 #        dotnet publish --configuration Release --output ../../publish/profile-service
     
-    - name: Build and test profile-service
+    - name: Build and test match-service
       run: |
         cd back-end/match-service
+        dotnet restore
         dotnet build --configuration Release
         cd ../test/MatchServiceTest
         dotnet test --logger "console;verbosity=detailed"
