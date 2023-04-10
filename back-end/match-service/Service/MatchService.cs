@@ -3,7 +3,7 @@ using MongoDB.Driver;
 public class MatchService : IMatchService
 {
     MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
-    private IMongoDatabase database;  
+    private IMongoDatabase database;
     private IMongoCollection<MatchModel> collection;
 
     public MatchService()
@@ -12,13 +12,22 @@ public class MatchService : IMatchService
         this.collection = database.GetCollection<MatchModel>("Match");
     }
 
-    public Task<bool> DeleteMatches(string CurrentProfileId)
+    public async Task<bool> DeleteMatches(string CurrentProfileId)
     {
-        throw new NotImplementedException();
+        return (await collection.DeleteOneAsync(currentProfile => currentProfile.CurrentProfileId == CurrentProfileId)).DeletedCount > 0;
     }
 
-    public void MatchProfiles()
+    public async Task<List<MatchModel>> GetProfileMatches(string CurrentProfileId)
     {
-        throw new NotImplementedException();
+        return await collection.Find(profile => CurrentProfileId == profile.CurrentProfileId).ToListAsync();
+    }
+
+    public async Task<string> MatchProfiles(MatchModel model)
+    {
+        if (model.isMatch == true)
+        {
+            await collection.InsertOneAsync(model);
+        }
+        return "Profile added";
     }
 }

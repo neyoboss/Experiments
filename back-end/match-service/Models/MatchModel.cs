@@ -2,7 +2,8 @@ using MongoDB.Bson.Serialization.Attributes;
 
 public class MatchModel
 {
-    [BsonExtraElements]
-    public Dictionary<string, List<bool>>? CurrentProfile { get; set; }
-    public Dictionary<string, bool>? OtherProfileMatch { get; set; }
+    [BsonId]
+    public string? CurrentProfileId { get; set; }
+    public string? OtherProfileId {get;set;}   
+    public bool? isMatch {get;set;}
 }

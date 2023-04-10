@@ -90,7 +90,21 @@ public class ProfileController : ControllerBase
         catch (Exception)
         {
             return StatusCode(StatusCodes.Status500InternalServerError,
-                "Error updating comment");
+                "Error updating profile");
+        }
+    }
+
+    [HttpGet("api/getProfilesWithoutCurrent/{currentProfileId}")]
+    public async Task<ActionResult<List<ProfileModel>>> GetProfilesWithoutCurrent(string currentProfileId)
+    {
+        try
+        {
+            return Ok(await profileService.GetProfileModelsWithoutCurrentId(currentProfileId));
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                $"Error fetching profiles: {e.Message}");
         }
     }
 }

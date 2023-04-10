@@ -6,4 +6,5 @@ public interface IProfileService
     Task<ProfileModel> UpdateProfile(ProfileModel profileModel);
     Task<ProfileModel> GetProfileById(Guid id);
     Task<List<string>> GetImagesFromAzureBlobOnId(string profileId);
+    Task<List<ProfileModel>> GetProfileModelsWithoutCurrentId(string currnetProfileId);
 }

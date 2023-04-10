@@ -52,12 +52,14 @@ public class ProfileService : IProfileService
         return profileModel;
     }
     #endregion
+
     #region DeleteProfile
     public async Task<bool> DeleteProfile(Guid id)
     {
         return (await collection.DeleteOneAsync(profile => profile.id == id)).DeletedCount > 0;
     }
     #endregion
+    
     public async Task<ProfileModel> GetProfileById(Guid id)
     {
         var profile = await collection.Find(profile => profile.id == id).FirstOrDefaultAsync();
@@ -90,5 +92,10 @@ public class ProfileService : IProfileService
 
         await collection.ReplaceOneAsync(profile => profile.id == updatedProfileModel.id, updatedProfileModel);
         return updatedProfileModel;
+    }
+
+    public async Task<List<ProfileModel>> GetProfileModelsWithoutCurrentId(string currnetProfileId)
+    {
+        return await collection.Find(profile => new Guid(currnetProfileId) != profile.id).ToListAsync();
     }
 }
