@@ -24,7 +24,7 @@ jobs:
         name: Build and push profile-service
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./back-end/profile-service
           file: ./back-end/profile-service/Dockerfile
           push: true
           tags: ${{secrets.DOCKERHUB_USERNAME}}/profile-service:latest
