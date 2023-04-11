@@ -6,12 +6,10 @@ services:
     container_name: profile-service
     build:
       context: ./back-end/profile-service/
-    environment:
-      - MongoDbSettings_DatabaseName=${DB_NAME}
-      - MongoDbSettings_ConnectionString=${DB_URL_TENDER}
     restart: on-failure
     depends_on:
      - rabbitmq
+    #  - mongo
   
   match-service:
     image: matchservice
@@ -21,6 +19,7 @@ services:
     restart: on-failure
     depends_on:
       - rabbitmq
+      # - mongo
 
   apiGateway:
     image: apigateway
@@ -42,3 +41,11 @@ services:
       interval: 5s
       timeout: 10s
       retries: 2
+
+  # mongo:
+  #   image: mongo:latest
+  #   environment:
+  #     - MongoDbSettings_DatabaseName=${DB_NAME}
+  #     - MongoDbSettings_ConnectionString=${DB_URL_TENDER}
+  #   ports:
+  #     - 1511:1511
