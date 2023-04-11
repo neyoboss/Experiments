@@ -27,7 +27,7 @@ jobs:
           context: .
           file: ./back-end/apiGateway/Dockerfile
           push: true
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/apiGateway:latest
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/api-gateway:latest
       -
         name: Build and push profile-service
         uses: docker/build-push-action@v4
