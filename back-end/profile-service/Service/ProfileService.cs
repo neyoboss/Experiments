@@ -38,6 +38,7 @@ public class ProfileService : IProfileService
         await blobClient.UploadAsync(new MemoryStream(imageBytes), new BlobHttpHeaders { ContentType = "image/jpeg" });
     }
     #endregion
+    
     #region RegisterProfile
     public async Task<ProfileModel> RegisterProfile(ProfileModelDTO profileDTO)
     {
