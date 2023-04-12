@@ -7,19 +7,21 @@ services:
     build:
       context: ./back-end/profile-service/
     restart: on-failure
+    networks:
+      - app_network
     depends_on:
      - rabbitmq
-    #  - mongo
-  
+
   match-service:
     image: matchservice
     container_name: match-service
     build:
       context: ./back-end/match-service/
     restart: on-failure
+    networks:
+      - app_network
     depends_on:
       - rabbitmq
-      # - mongo
 
   apiGateway:
     image: apigateway
@@ -28,24 +30,27 @@ services:
       context: ./back-end/apiGateway/
     ports:
       - 7000:80
-  
+    networks:
+      - app_network
+
   rabbitmq:
-    image: rabbitmq:3.11-management
-    hostname: rabbitmq
+    image: rabbitmq:3-management
     container_name: rabbitmq
+    hostname: rabbit
     ports:
-    - 15672:15672
-    - 5672:5672
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - ./.rabbitmq_data:/var/lib/rabbitmq/mnesia
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 5s
       timeout: 10s
       retries: 2
-
-  # mongo:
-  #   image: mongo:latest
-  #   environment:
-  #     - MongoDbSettings_DatabaseName=${DB_NAME}
-  #     - MongoDbSettings_ConnectionString=${DB_URL_TENDER}
-  #   ports:
-  #     - 1511:1511
+    restart: on-failure
+    networks:
+      - app_network
+    
+networks:
+  app_network:
+    driver: bridge

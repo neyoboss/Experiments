@@ -1,7 +1,7 @@
 {
     "Routes":[
         {
-            "UpstreamPathTemplate":"/api/{everything}",
+            "DownstreamPathTemplate":"/api/profile/{everything}",
             "DownstreamScheme":"http",
             "DownstreamHostAndPorts":[
                 {
@@ -9,7 +9,18 @@
                     "Port":80
                 }
             ],
-            "DownstreamPathTemplate":"/api/{everything}"
+            "UpstreamPathTemplate":"/api/profile/{everything}"
+        },
+        {
+            "DownstreamPathTemplate":"/api/matches/{everything}",
+            "DownstreamScheme":"http",
+            "DownstreamHostAndPorts":[
+                {
+                    "Host":"match-service",
+                    "Port":80
+                }
+            ],
+            "UpstreamPathTemplate":"/api/matches/{everything}"
         }
     ],
     "GlobalConfiguration":{

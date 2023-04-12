@@ -7,7 +7,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMatchService, MatchService>();
-builder.Services.AddScoped<IMessageReceive, MessageReceive>();
+builder.Services.AddSingleton<MessageReceive>();
+builder.Services.AddHostedService<MessageReceive>();
 
 var app = builder.Build();
 

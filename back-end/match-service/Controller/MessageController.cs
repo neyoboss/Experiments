@@ -5,11 +5,11 @@ using System.Net.Http;
 [ApiController]
 public class MessageController : ControllerBase
 {
-    IMessageReceive messageReceive;
+   
     IMatchService matchService;
-    public MessageController(IMessageReceive messageReceive, IMatchService matchService)
+    public MessageController(IMatchService matchService)
     {
-        this.messageReceive = messageReceive;
+ 
         this.matchService = matchService;
     }
 
@@ -48,6 +48,19 @@ public class MessageController : ControllerBase
         try
         {
             return Ok(await matchService.MatchProfiles(model));
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"{e.Message}");
+        }
+    }
+    
+    [HttpDelete("api/matches/deleteMatch/{id}")]
+    public async Task<ActionResult> Match(string id)
+    {
+        try
+        {
+            return Ok(await matchService.DeleteMatches(id));
         }
         catch (Exception e)
         {

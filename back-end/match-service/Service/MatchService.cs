@@ -14,9 +14,12 @@ public class MatchService : IMatchService
         this.matchedModelsCollection = database.GetCollection<MatchedModels>("Matched");
     }
 
-    public async Task<bool> DeleteMatches(string CurrentProfileId)
+    public async Task<bool> DeleteMatches(string profileId)
     {
-        return (await collection.DeleteOneAsync(currentProfile => currentProfile.CurrentProfileId == CurrentProfileId)).DeletedCount > 0;
+
+        // await matchedModelsCollection.DeleteOneAsync(profile => profile.Profile1 == profileId || profile.Profile2 == profileId);
+        // await collection.DeleteOneAsync(profile => profile.CurrentProfileId == profileId || profile.OtherProfileId == profileId);
+        return (await collection.DeleteOneAsync(profile => profile.OtherProfileId == profileId)).DeletedCount>0;
     }
 
     public async Task<List<MatchModel>> GetProfileMatches(string CurrentProfileId)
@@ -24,53 +27,31 @@ public class MatchService : IMatchService
         return await collection.Find(profile => CurrentProfileId == profile.CurrentProfileId).ToListAsync();
     }
 
-    public async Task<MatchedModels> CreateMatch(string model1, string model2)
-    {
-        var firstModel = await collection.Find(profile => model1 == profile.CurrentProfileId).FirstOrDefaultAsync();
-        var secondProfile = await collection.Find(profile => model2 == profile.CurrentProfileId).FirstOrDefaultAsync();
-
-        if (firstModel.CurrentProfileId == secondProfile.OtherProfileId || secondProfile.CurrentProfileId == firstModel.OtherProfileId)
-        {
-            var matchedModel = new MatchedModels
-            {
-                Profile1 = firstModel.CurrentProfileId,
-                Profile2 = secondProfile.CurrentProfileId
-            };
-
-            await matchedModelsCollection.InsertOneAsync(matchedModel);
-
-            return matchedModel;
-        }
-        else
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public async Task<string> MatchProfiles(MatchModel model)
     {
-        if (model.isMatch == true)
-        {
-            await collection.InsertOneAsync(model);
-            return "Profile added";
-        }
-
         var firstProfile = await collection.Find(profile => model.CurrentProfileId == profile.CurrentProfileId && model.OtherProfileId == profile.OtherProfileId).FirstOrDefaultAsync();
         var secondProfile = await collection.Find(profile => model.CurrentProfileId == profile.OtherProfileId && model.OtherProfileId == profile.CurrentProfileId).FirstOrDefaultAsync();
-
-        if (firstProfile != null && secondProfile != null)
+        if (model.isMatch == true)
         {
-            var matchedModel = new MatchedModels
+            if (firstProfile != null && secondProfile != null)
             {
-                Profile1 = firstProfile.CurrentProfileId,
-                Profile2 = secondProfile.CurrentProfileId
-            };
+                var matchedModel = new MatchedModels
+                {
+                    Profile1 = firstProfile.CurrentProfileId,
+                    Profile2 = secondProfile.CurrentProfileId
+                };
 
-            await matchedModelsCollection.InsertOneAsync(matchedModel);
-
-            return "Created Match";
+                await matchedModelsCollection.InsertOneAsync(matchedModel);
+                await collection.DeleteOneAsync(profile => model.CurrentProfileId == profile.CurrentProfileId && model.OtherProfileId == profile.OtherProfileId);
+                await collection.DeleteOneAsync(profile => model.CurrentProfileId == profile.OtherProfileId && model.OtherProfileId == profile.CurrentProfileId);
+                return "Created Match";
+            }
+            else
+            {
+                await collection.InsertOneAsync(model);
+                return "Profile added";
+            }
         }
-
         return "k";
     }
 }

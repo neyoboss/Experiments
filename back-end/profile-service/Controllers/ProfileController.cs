@@ -12,7 +12,7 @@ public class ProfileController : ControllerBase
         this.rabbitMQProducer = rabbitMQProducer;
     }
 
-    [HttpGet("api/getAllProfiles")]
+    [HttpGet("api/profile/getAllProfiles")]
     public async Task<ActionResult<List<ProfileModel>>> GetAllProfiles()
     {
         try
@@ -26,7 +26,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("api/images/{id}")]
+    [HttpGet("api/profile/images/{id}")]
     public async Task<ActionResult<List<string>>> GetImages(string id)
     {
         try
@@ -55,14 +55,21 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("api/sendMessage")]
+    [HttpGet("api/profile/sendMessage")]
     public ActionResult<string> SendMessage()
     {
-        rabbitMQProducer.SendMessage("Hello");
-        return "Message send";
+        try
+        {
+            rabbitMQProducer.SendMessage("Hello");
+            return "Message send";
+        }
+        catch (Exception e)
+        { 
+            throw e; 
+        }
     }
 
-    [HttpPost("api/registerProfile")]
+    [HttpPost("api/profile/registerProfile")]
     public async Task<ActionResult<ProfileModel>> RegisterProfile(ProfileModelDTO profile)
     {
         try
@@ -80,7 +87,7 @@ public class ProfileController : ControllerBase
 
     }
 
-    [HttpPut("api/updateProfile")]
+    [HttpPut("api/profile/updateProfile")]
     public async Task<ActionResult<ProfileModel>> UpdateProfile(ProfileModel profile)
     {
         try
@@ -94,7 +101,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("api/getProfilesWithoutCurrent/{currentProfileId}")]
+    [HttpGet("api/profile/getProfilesWithoutCurrent/{currentProfileId}")]
     public async Task<ActionResult<List<ProfileModel>>> GetProfilesWithoutCurrent(string currentProfileId)
     {
         try
@@ -105,6 +112,22 @@ public class ProfileController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError,
                 $"Error fetching profiles: {e.Message}");
+        }
+    }
+
+    [HttpDelete("api/profile/deleteProfile/{id}")]
+    public async Task<ActionResult> DeleteComment(Guid id)
+    {
+        try
+        {
+            await profileService.DeleteProfile(id);
+            rabbitMQProducer.SendMessage(id.ToString());
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                $"Error deleting profile: {e.Message}");
         }
     }
 }
