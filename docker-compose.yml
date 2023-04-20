@@ -10,8 +10,8 @@ services:
     networks:
       - app_network
     depends_on:
-     - rabbitmq
-
+      - rabbitmq
+        
   match-service:
     image: matchservice
     container_name: match-service
@@ -22,7 +22,7 @@ services:
       - app_network
     depends_on:
       - rabbitmq
-
+       
   apiGateway:
     image: apigateway
     container_name: api-gateway
@@ -36,14 +36,12 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
-    hostname: rabbit
+    hostname: rabbitmq
     ports:
       - 15672:15672
       - 5672:5672
-    volumes:
-      - ./.rabbitmq_data:/var/lib/rabbitmq/mnesia
     healthcheck:
-      test: rabbitmq-diagnostics -q ping
+      test: ["CMD", "rabbitmqctl", "status"]
       interval: 5s
       timeout: 10s
       retries: 2

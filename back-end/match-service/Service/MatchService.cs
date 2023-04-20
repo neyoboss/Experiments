@@ -19,7 +19,7 @@ public class MatchService : IMatchService
 
         // await matchedModelsCollection.DeleteOneAsync(profile => profile.Profile1 == profileId || profile.Profile2 == profileId);
         // await collection.DeleteOneAsync(profile => profile.CurrentProfileId == profileId || profile.OtherProfileId == profileId);
-        return (await collection.DeleteOneAsync(profile => profile.OtherProfileId == profileId)).DeletedCount>0;
+        return (await collection.DeleteOneAsync(profile => profile.OtherProfileId == profileId)).DeletedCount > 0;
     }
 
     public async Task<List<MatchModel>> GetProfileMatches(string CurrentProfileId)
@@ -29,10 +29,10 @@ public class MatchService : IMatchService
 
     public async Task<string> MatchProfiles(MatchModel model)
     {
-        var firstProfile = await collection.Find(profile => model.CurrentProfileId == profile.CurrentProfileId && model.OtherProfileId == profile.OtherProfileId).FirstOrDefaultAsync();
-        var secondProfile = await collection.Find(profile => model.CurrentProfileId == profile.OtherProfileId && model.OtherProfileId == profile.CurrentProfileId).FirstOrDefaultAsync();
         if (model.isMatch == true)
         {
+            var firstProfile = await collection.Find(profile => model.CurrentProfileId == profile.CurrentProfileId && model.OtherProfileId == profile.OtherProfileId).FirstOrDefaultAsync();
+            var secondProfile = await collection.Find(profile => model.CurrentProfileId == profile.OtherProfileId && model.OtherProfileId == profile.CurrentProfileId).FirstOrDefaultAsync();
             if (firstProfile != null && secondProfile != null)
             {
                 var matchedModel = new MatchedModels
