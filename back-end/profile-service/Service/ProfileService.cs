@@ -57,7 +57,6 @@ public class ProfileService : IProfileService
     #region DeleteProfile
     public async Task<bool> DeleteProfile(Guid id)
     {
-        
         return (await collection.DeleteOneAsync(profile => profile.id == id)).DeletedCount > 0;
     }
     #endregion
