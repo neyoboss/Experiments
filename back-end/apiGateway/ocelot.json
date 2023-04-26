@@ -1,29 +1,37 @@
 {
-    "Routes":[
+    "Routes": [
         {
-            "DownstreamPathTemplate":"/api/profile/{everything}",
-            "DownstreamScheme":"http",
-            "DownstreamHostAndPorts":[
+            "DownstreamPathTemplate": "/api/profile/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
                 {
-                    "Host":"profile-service",
-                    "Port":80
+                    "Host": "profile-service",
+                    "Port": 80
                 }
             ],
-            "UpstreamPathTemplate":"/api/profile/{everything}"
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Auth0",
+                "AllowedScopes": [
+                    "openid",
+                    "profile",
+                    "email"
+                ]
+            },
+            "UpstreamPathTemplate": "/api/profile/{everything}"
         },
         {
-            "DownstreamPathTemplate":"/api/matches/{everything}",
-            "DownstreamScheme":"http",
-            "DownstreamHostAndPorts":[
+            "DownstreamPathTemplate": "/api/matches/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
                 {
-                    "Host":"match-service",
-                    "Port":80
+                    "Host": "match-service",
+                    "Port": 80
                 }
             ],
-            "UpstreamPathTemplate":"/api/matches/{everything}"
+            "UpstreamPathTemplate": "/api/matches/{everything}"
         }
     ],
-    "GlobalConfiguration":{
-        "BaseUrl":"http://+:8000"
+    "GlobalConfiguration": {
+        "BaseUrl": "http://+:8000"
     }
 }

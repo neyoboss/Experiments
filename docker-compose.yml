@@ -1,6 +1,15 @@
 version: '3.8'
 
 services:
+  auth-service:
+    image: authservice
+    container_name: auth-service
+    build:
+      context: ./back-end/auth-service/
+    restart: on-failure
+    networks:
+      - app_network
+
   profile-service:
     image: profileservice
     container_name: profile-service

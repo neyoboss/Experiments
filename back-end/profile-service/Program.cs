@@ -13,18 +13,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProfileService,ProfileService>();
 builder.Services.AddScoped<IRabbitMQProducer, RabbitMQProducer>();
 
-// builder.Services.ConfigureSameSiteNoneCookies();
-
-// builder.Services.AddAuth0WebAppAuthentication(options =>
-// {
-//     options.Domain = builder.Configuration["Auth0:Domain"];
-//     options.ClientId = builder.Configuration["Auth0:ClientId"];
-//     options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
-// }).WithAccessToken(options => {
-//     options.Audience=builder.Configuration["Auth0:Audience"];
-//     options.UseRefreshTokens = true;
-// });
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -32,7 +20,6 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    // options.Authority = builder.Configuration["Auth0:Domain"];
     options.Authority = "https://dev-0ck6l5pnflrq01jd.eu.auth0.com";
     options.Audience = builder.Configuration["Auth0:Audience"];
     options.RequireHttpsMetadata = false;
