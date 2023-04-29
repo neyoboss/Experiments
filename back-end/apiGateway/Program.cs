@@ -9,15 +9,10 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
     .AddEnvironmentVariables();
 builder.Services.AddOcelot(builder.Configuration);
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer("Auth0",options =>
+builder.Services.AddAuthentication().AddJwtBearer("Auth0",options =>
 {
     options.Authority = "https://dev-0ck6l5pnflrq01jd.eu.auth0.com";
-    options.Audience = builder.Configuration["Auth0:Audience"];
+    options.Audience ="https://tender-auth/";
     options.RequireHttpsMetadata = false;
 });
 

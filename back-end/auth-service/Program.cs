@@ -11,18 +11,24 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer("Auth0",options =>
-{
-    options.Authority = "https://dev-0ck6l5pnflrq01jd.eu.auth0.com";
-    options.Audience = builder.Configuration["Auth0:Audience"];
-    options.RequireHttpsMetadata = false;
-});
+// builder.Services.AddAuthentication(options =>
+// {
+//     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+// })
+// .AddJwtBearer("Auth0",options =>
+// {
+//     options.Authority = "https://dev-0ck6l5pnflrq01jd.eu.auth0.com";
+//     options.Audience = builder.Configuration["Auth0:Audience"];
+//     options.RequireHttpsMetadata = false;
+// });
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddAuth0WebAppAuthentication(options =>
+{
+    options.Domain = builder.Configuration["Auth0:Domain"];
+    options.ClientId = builder.Configuration["Auth0:ClientId"];
+});
 
 var app = builder.Build();
 

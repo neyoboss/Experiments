@@ -10,12 +10,7 @@
                 }
             ],
             "AuthenticationOptions": {
-                "AuthenticationProviderKey": "Auth0",
-                "AllowedScopes": [
-                    "openid",
-                    "profile",
-                    "email"
-                ]
+                "AuthenticationProviderKey": "Auth0"
             },
             "UpstreamPathTemplate": "/api/profile/{everything}"
         },
@@ -29,9 +24,23 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/matches/{everything}"
-        }
+        },
+        {
+            "DownstreamPathTemplate": "/api/auth/{everything}",
+            "UpstreamPathTemplate": "/api/auth/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+              {
+                "Host": "auth-service",
+                "Port": 80
+              }
+            ]
+          }
     ],
     "GlobalConfiguration": {
+        "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Auth0"
+        },
         "BaseUrl": "http://+:8000"
     }
 }

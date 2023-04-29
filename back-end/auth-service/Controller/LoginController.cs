@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Auth0.AuthenticationApi.Models;
 using Auth0.AuthenticationApi;
+using Microsoft.AspNetCore.Authentication;
+using Auth0.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 public class LoginController : Controller
 {
@@ -12,8 +17,8 @@ public class LoginController : Controller
         this.config = config;
     }
 
-    [HttpPost("api/login")]
-    public async Task<IActionResult> Login([FromBody] LoginModel request)
+    [HttpPost("api/auth/login")]
+    public async Task<ActionResult> Login([FromBody] LoginModel request)
     {
         var result = await _auth0Client.GetTokenAsync(new ResourceOwnerTokenRequest
         {
@@ -27,12 +32,25 @@ public class LoginController : Controller
 
         if (result != null)
         {
+            Response.Cookies.Append("token",result.AccessToken, new CookieOptions{
+                Path="/",
+                HttpOnly = true,
+                Secure=false
+            });
             return Ok(new { access_token = result.AccessToken });
         }
         else
         {
             return Unauthorized();
         }
+    }
+    
+    [Authorize]
+    [HttpPost("api/auth/logout")]
+    public ActionResult Logout()
+    {
+        Response.Cookies.Delete("token");
+        return Ok();
     }
 
     public class LoginModel
