@@ -1,20 +1,64 @@
 using Microsoft.AspNetCore.Mvc;
 using Auth0.AuthenticationApi.Models;
 using Auth0.AuthenticationApi;
-using Microsoft.AspNetCore.Authentication;
-using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
-
+using Auth0.ManagementApi;
+using Auth0.ManagementApi.Models;
+using MongoDB.Driver;
 public class LoginController : Controller
 {
-    private readonly AuthenticationApiClient _auth0Client = new AuthenticationApiClient(new Uri("https://dev-0ck6l5pnflrq01jd.eu.auth0.com"));
     private readonly IConfiguration config;
+    private readonly AuthenticationApiClient _auth0Client = new AuthenticationApiClient(new Uri("https://dev-0ck6l5pnflrq01jd.eu.auth0.com"));
 
-    public LoginController(IConfiguration config)
+    MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
+    private IMongoDatabase database;
+    private IMongoCollection<Object> collection;
+
+    IRabbitMqProducer rabbitMqProducer;
+
+    public LoginController(IConfiguration config, IRabbitMqProducer rabbitMqProducer)
     {
+        this.rabbitMqProducer = rabbitMqProducer;
         this.config = config;
+        this.database = dbClient.GetDatabase("Tender");
+        this.collection = database.GetCollection<Object>("Profile");
+    }
+
+    [AllowAnonymous]
+    [HttpPost("api/auth/register")]
+    public async Task<ActionResult> Register([FromBody] LoginModel model)
+    {
+        try
+        {
+
+            var auth0ManageClient = new ManagementApiClient(config["Auth0:ApiToken"], config["Auth0:Domain"]);
+
+            var auth0UserReq = new UserCreateRequest
+            {
+                Email = model.email,
+                Password = model.password,
+                Connection = "Tender"
+            };
+
+            var createUser = await auth0ManageClient.Users.CreateAsync(auth0UserReq);
+
+            var user = new User
+            {
+                UserId = createUser.UserId,
+                Email = model.email,
+                FirstName = model.firstName,
+                LastName = model.lastName
+            };
+
+            rabbitMqProducer.SendMessage(user.UserId);
+            
+            await collection.InsertOneAsync(user);
+            return Ok("user created");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("api/auth/login")]
@@ -32,10 +76,11 @@ public class LoginController : Controller
 
         if (result != null)
         {
-            Response.Cookies.Append("token",result.AccessToken, new CookieOptions{
-                Path="/",
+            Response.Cookies.Append("token", result.AccessToken, new CookieOptions
+            {
+                Path = "/",
                 HttpOnly = true,
-                Secure=false
+                Secure = false
             });
             return Ok(new { access_token = result.AccessToken });
         }
@@ -44,7 +89,7 @@ public class LoginController : Controller
             return Unauthorized();
         }
     }
-    
+
     [Authorize]
     [HttpPost("api/auth/logout")]
     public ActionResult Logout()
@@ -55,7 +100,10 @@ public class LoginController : Controller
 
     public class LoginModel
     {
-        public string email { get; set; }
-        public string password { get; set; }
+        public string? email { get; set; }
+        public string? password { get; set; }
+
+        public string? firstName { get; set; }
+        public string? lastName { get; set; }
     }
 }
