@@ -42,8 +42,15 @@ services:
     container_name: api-gateway
     build:
       context: ./back-end/apiGateway/
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTPS_PORT=7000
+      - ASPNETCORE_URLS=https://+:443,http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=neyko123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=./certificate/aspnetapp.pfx
     ports:
-      - 7000:80
+      - 7000:443
+      - 6000:80
     networks:
       - app_network
 

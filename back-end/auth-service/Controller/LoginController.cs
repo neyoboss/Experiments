@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Authorization;
 using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
 using MongoDB.Driver;
-public class LoginController : Controller
-{
-    private readonly IConfiguration config;
-    private readonly AuthenticationApiClient _auth0Client = new AuthenticationApiClient(new Uri("https://dev-0ck6l5pnflrq01jd.eu.auth0.com"));
 
+[ApiController]
+public partial class LoginController : ControllerBase
+{
+    private readonly AuthenticationApiClient _auth0Client = new AuthenticationApiClient(new Uri("https://dev-0ck6l5pnflrq01jd.eu.auth0.com"));
     MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
+    private readonly IConfiguration config;
     private IMongoDatabase database;
     private IMongoCollection<Object> collection;
-
     IRabbitMqProducer rabbitMqProducer;
 
     public LoginController(IConfiguration config, IRabbitMqProducer rabbitMqProducer)
@@ -30,7 +30,6 @@ public class LoginController : Controller
     {
         try
         {
-
             var auth0ManageClient = new ManagementApiClient(config["Auth0:ApiToken"], config["Auth0:Domain"]);
 
             var auth0UserReq = new UserCreateRequest
@@ -96,14 +95,5 @@ public class LoginController : Controller
     {
         Response.Cookies.Delete("token");
         return Ok();
-    }
-
-    public class LoginModel
-    {
-        public string? email { get; set; }
-        public string? password { get; set; }
-
-        public string? firstName { get; set; }
-        public string? lastName { get; set; }
     }
 }

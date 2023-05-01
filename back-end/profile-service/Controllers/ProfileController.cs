@@ -26,20 +26,6 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("api/profile/images/{id}")]
-    public async Task<ActionResult<List<string>>> GetImages(string id)
-    {
-        try
-        {
-            return Ok(await profileService.GetImagesFromAzureBlobOnId(id));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                $"Error getting profile, {ex.Message}");
-        }
-    }
-
     [HttpGet("api/profile/{id}")]
     public async Task<ActionResult<ProfileModel>> GetProfile(Guid id)
     {
@@ -67,24 +53,6 @@ public class ProfileController : ControllerBase
         { 
             throw e; 
         }
-    }
-
-    [HttpPost("api/profile/registerProfile")]
-    public async Task<ActionResult<ProfileModel>> RegisterProfile(ProfileModelDTO profile)
-    {
-        try
-        {
-            var addProfile = await profileService.RegisterProfile(profile);
-            //rabbitMQProducer.SendMessage(profile);
-
-            return Ok(addProfile);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                $"Error registering profile: {e.Message}");
-        }
-
     }
 
     [HttpPut("api/profile/updateProfile")]

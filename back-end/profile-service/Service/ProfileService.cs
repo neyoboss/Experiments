@@ -1,9 +1,11 @@
 using MongoDB.Driver;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Auth0.AuthenticationApi;
 
 public class ProfileService : IProfileService
 {
+    private readonly AuthenticationApiClient _auth0Client = new AuthenticationApiClient(new Uri("https://dev-0ck6l5pnflrq01jd.eu.auth0.com"));
     MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
     private IMongoDatabase database;
     private IMongoCollection<ProfileModel> collection;
@@ -16,19 +18,6 @@ public class ProfileService : IProfileService
         this.collection = database.GetCollection<ProfileModel>("Profile");
     }
 
-    public async Task<List<string>> GetImagesFromAzureBlobOnId(string profileId)
-    {
-        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profileId);
-
-        List<string> imageUrls = new List<string>();
-        await foreach (var item in containerClient.GetBlobsAsync())
-        {
-            BlobClient blobClient = containerClient.GetBlobClient(item.Name);
-            imageUrls.Add(blobClient.Uri.AbsoluteUri);
-        }
-        return imageUrls;
-    }
-
     #region AddImageToAzure
     public async void AddImagesToAzureBlolb(string profileId, byte[] imageBytes)
     {
@@ -39,20 +28,6 @@ public class ProfileService : IProfileService
     }
     #endregion
     
-    #region RegisterProfile
-    public async Task<ProfileModel> RegisterProfile(ProfileModelDTO profileDTO)
-    {
-        var profileModel = new ProfileModel
-        {
-            email = profileDTO.email,
-            firstName = profileDTO.firstName,
-            lastName = profileDTO.lastName,
-            password = profileDTO.password,
-        };
-        await collection.InsertOneAsync(profileModel);
-        return profileModel;
-    }
-    #endregion
 
     #region DeleteProfile
     public async Task<bool> DeleteProfile(Guid id)
@@ -64,7 +39,7 @@ public class ProfileService : IProfileService
     public async Task<ProfileModel> GetProfileById(Guid id)
     {
         var profile = await collection.Find(profile => profile.id == id).FirstOrDefaultAsync();
-        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profile.id.ToString());
+        // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profile.id.ToString());
         
         // List<string> imageUrls = new List<string>();
         // await foreach (var item in containerClient.GetBlobsAsync())
@@ -84,13 +59,6 @@ public class ProfileService : IProfileService
 
     public async Task<ProfileModel> UpdateProfile(ProfileModel updatedProfileModel)
     {
-
-        // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(updatedProfileModel.id.ToString());
-        // if (!await containerClient.ExistsAsync())
-        // {
-        //     await containerClient.CreateAsync(PublicAccessType.BlobContainer);
-        // }
-
         await collection.ReplaceOneAsync(profile => profile.id == updatedProfileModel.id, updatedProfileModel);
         return updatedProfileModel;
     }
