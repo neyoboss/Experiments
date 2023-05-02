@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import { useUser } from '@auth0/nextjs-auth0/client';
+import Login from './login';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,5 +28,9 @@ export default function Home() {
   //     )}
   //   </div>
   // );
-  return <a href="/api/auth/login">Login</a>;
+  return (
+    <>
+      <Login/>
+    </>
+  );
 }

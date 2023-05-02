@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -13,8 +14,12 @@ public class MessageReceive : IHostedService
     private readonly IModel channel;
     private readonly string queueName = "ProfileQueue";
 
-    public MessageReceive()
+    private IMatchService matchService;
+
+    public MessageReceive(IMatchService matchService)
     {
+        this.matchService = matchService;
+
         var factory = new ConnectionFactory();
         factory.Uri = new Uri("amqp://rabbitmq:5672");
         factory.ClientProvidedName = "Tender/Match-Service";
@@ -38,8 +43,12 @@ public class MessageReceive : IHostedService
         {
             //we manipulate the received messgae here and do what we want to (Save to DB etc.)
 
+            User? user = JsonSerializer.Deserialize<User>(args.Body.ToArray());
+
             var body = args.Body.ToArray();
             string message = Encoding.UTF8.GetString(body);
+
+            
             Console.WriteLine($"Message Received: {message}");
 
             //once we acknowledge it, the message is gone

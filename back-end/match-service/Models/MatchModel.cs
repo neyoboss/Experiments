@@ -3,8 +3,8 @@ using MongoDB.Bson;
 
 public class MatchModel
 {
-    [BsonId]
-    public string? CurrentProfileId { get; set; }
-    public string? OtherProfileId {get;set;}   
-    public bool? isMatch {get;set;}
+    public string Id { get; set; }
+
+    [BsonExtraElements]
+    public Dictionary<User,List<User>> MatchesForUser;
 }

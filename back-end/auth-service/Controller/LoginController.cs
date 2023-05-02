@@ -49,7 +49,7 @@ public partial class LoginController : ControllerBase
                 LastName = model.lastName
             };
 
-            rabbitMqProducer.SendMessage(user.UserId);
+            rabbitMqProducer.SendMessage(user);
             
             await collection.InsertOneAsync(user);
             return Ok("user created");
