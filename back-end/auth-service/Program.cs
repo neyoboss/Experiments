@@ -40,6 +40,9 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 app.UseHttpsRedirection();
 
+app.UseCookiePolicy();
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

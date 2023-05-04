@@ -81,6 +81,7 @@ public partial class LoginController : ControllerBase
                 HttpOnly = true,
                 Secure = false
             });
+            
             return Ok(new { access_token = result.AccessToken });
         }
         else

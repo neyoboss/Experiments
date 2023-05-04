@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -50,8 +51,8 @@ public class ProfileController : ControllerBase
             return "Message send";
         }
         catch (Exception e)
-        { 
-            throw e; 
+        {
+            throw e;
         }
     }
 
@@ -97,5 +98,12 @@ public class ProfileController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError,
                 $"Error deleting profile: {e.Message}");
         }
+    }
+
+    [Authorize]
+    [HttpGet("api/testService")]
+    public async Task<ActionResult> Test()
+    {
+        return Ok("Tested auth");
     }
 }
