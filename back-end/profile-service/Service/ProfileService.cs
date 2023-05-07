@@ -30,13 +30,13 @@ public class ProfileService : IProfileService
     
 
     #region DeleteProfile
-    public async Task<bool> DeleteProfile(Guid id)
+    public async Task<bool> DeleteProfile(string id)
     {
         return (await collection.DeleteOneAsync(profile => profile.id == id)).DeletedCount > 0;
     }
     #endregion
     
-    public async Task<ProfileModel> GetProfileById(Guid id)
+    public async Task<ProfileModel> GetProfileById(string id)
     {
         var profile = await collection.Find(profile => profile.id == id).FirstOrDefaultAsync();
         // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profile.id.ToString());
@@ -65,6 +65,6 @@ public class ProfileService : IProfileService
 
     public async Task<List<ProfileModel>> GetProfileModelsWithoutCurrentId(string currnetProfileId)
     {
-        return await collection.Find(profile => new Guid(currnetProfileId) != profile.id).ToListAsync();
+        return await collection.Find(profile => currnetProfileId != profile.id).ToListAsync();
     }
 }

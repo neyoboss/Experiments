@@ -13,7 +13,7 @@ public partial class LoginController : ControllerBase
     MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
     private readonly IConfiguration config;
     private IMongoDatabase database;
-    private IMongoCollection<Object> collection;
+    private IMongoCollection<LoginModel> collection;
     IRabbitMqProducer rabbitMqProducer;
 
     public LoginController(IConfiguration config, IRabbitMqProducer rabbitMqProducer)
@@ -21,7 +21,7 @@ public partial class LoginController : ControllerBase
         this.rabbitMqProducer = rabbitMqProducer;
         this.config = config;
         this.database = dbClient.GetDatabase("Tender");
-        this.collection = database.GetCollection<Object>("Profile");
+        this.collection = database.GetCollection<LoginModel>("Profile");
     }
 
     [AllowAnonymous]
@@ -39,19 +39,19 @@ public partial class LoginController : ControllerBase
                 Connection = "Tender"
             };
 
-            var createUser = await auth0ManageClient.Users.CreateAsync(auth0UserReq);
+            // var createUser = await auth0ManageClient.Users.CreateAsync(auth0UserReq);
 
-            var user = new User
+            var user = new LoginModel
             {
-                UserId = createUser.UserId,
-                Email = model.email,
-                FirstName = model.firstName,
-                LastName = model.lastName
+                id = "123-asd",
+                email = model.email,
+                firstName = model.firstName,
+                lastName = model.lastName
             };
-
-            rabbitMqProducer.SendMessage(user);
             
-            await collection.InsertOneAsync(user);
+            rabbitMqProducer.SendMessage(user,"blob","AzureBlobCreation");
+
+            // await collection.InsertOneAsync(user);
             return Ok("user created");
         }
         catch (Exception ex)
@@ -81,7 +81,7 @@ public partial class LoginController : ControllerBase
                 HttpOnly = true,
                 Secure = false
             });
-            
+
             return Ok(new { access_token = result.AccessToken });
         }
         else

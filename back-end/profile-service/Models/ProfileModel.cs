@@ -5,7 +5,7 @@ public class ProfileModel
 {
     [BsonId]
     [BsonRepresentation(BsonType.String)]
-    public Guid id { get; set; }
+    public string id { get; set; }
     public string? email { get; set; }
     public string? firstName { get; set; }
     public string? lastName { get; set; }

@@ -42,12 +42,6 @@ services:
     container_name: api-gateway
     build:
       context: ./back-end/apiGateway/
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTPS_PORT=7000
-      - ASPNETCORE_URLS=https://+:443,http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=neyko123
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=./certificate/aspnetapp.pfx
     ports:
       - 7000:443
       - 6000:80
@@ -56,19 +50,16 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    environment:
-      RABBITMQ_DELAYED_QUEUE_MODE: "on"
-    container_name: rabbitmq
     hostname: rabbitmq
+    container_name: rabbitmq
     ports:
-      - 15672:15672
       - 5672:5672
+      - 15672:15672
     healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      interval: 5s
-      timeout: 10s
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 20s
       retries: 2
-    restart: on-failure
     networks:
       - app_network
     

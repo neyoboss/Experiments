@@ -3,8 +3,9 @@ using MongoDB.Bson;
 
 public class MatchModel
 {
-    public string Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.String)]
+    public string? id { get; set; }
 
-    [BsonExtraElements]
-    public Dictionary<User,List<User>> MatchesForUser;
+    public Dictionary<string, List<User>> MatchesForUser;
 }

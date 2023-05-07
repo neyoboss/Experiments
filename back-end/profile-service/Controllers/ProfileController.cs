@@ -28,7 +28,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("api/profile/{id}")]
-    public async Task<ActionResult<ProfileModel>> GetProfile(Guid id)
+    public async Task<ActionResult<ProfileModel>> GetProfile(string id)
     {
         try
         {
@@ -85,7 +85,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpDelete("api/profile/deleteProfile/{id}")]
-    public async Task<ActionResult> DeleteComment(Guid id)
+    public async Task<ActionResult> DeleteComment(string id)
     {
         try
         {
