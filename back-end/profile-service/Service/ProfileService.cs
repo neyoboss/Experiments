@@ -39,6 +39,7 @@ public class ProfileService : IProfileService
     public async Task<ProfileModel> GetProfileById(string id)
     {
         var profile = await collection.Find(profile => profile.id == id).FirstOrDefaultAsync();
+        id = id.Replace("|","-");
         // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profile.id.ToString());
         
         // List<string> imageUrls = new List<string>();

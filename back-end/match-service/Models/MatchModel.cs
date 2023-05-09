@@ -7,5 +7,5 @@ public class MatchModel
     [BsonRepresentation(BsonType.String)]
     public string? id { get; set; }
 
-    public Dictionary<string, List<User>> MatchesForUser;
+    public List<User> MatchesForUser;
 }

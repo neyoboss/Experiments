@@ -20,11 +20,8 @@ public class MatchService : IMatchService
 
         if (matchModel != null)
         {
-            if (matchModel.MatchesForUser.TryGetValue(id, out List<User>? matches))
-            {
-                matches.Add(user);
-            }
-
+            matchModel.MatchesForUser.Add(user);
+            
             var update = Builders<MatchModel>.Update.Set("MatchesForUser", matchModel.MatchesForUser);
             await collection.UpdateOneAsync(filter, update);
         }

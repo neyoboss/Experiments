@@ -43,13 +43,14 @@ public partial class LoginController : ControllerBase
 
             var user = new LoginModel
             {
+                // UserId = createUser.UserId,
                 id = "123-asd",
                 email = model.email,
                 firstName = model.firstName,
                 lastName = model.lastName
             };
-            
-            rabbitMqProducer.SendMessage(user,"blob","AzureBlobCreation");
+
+            rabbitMqProducer.SendMessage(user, "blob", "AzureBlobCreation");
 
             // await collection.InsertOneAsync(user);
             return Ok("user created");
@@ -75,14 +76,16 @@ public partial class LoginController : ControllerBase
 
         if (result != null)
         {
-            Response.Cookies.Append("token", result.AccessToken, new CookieOptions
+            Response.Cookies.Append("access_token", result.AccessToken, new CookieOptions
             {
                 Path = "/",
-                HttpOnly = true,
-                Secure = false
+                HttpOnly = false,
+                Secure = true,
+                SameSite = SameSiteMode.None
             });
+            var user = await _auth0Client.GetUserInfoAsync(result.AccessToken);
 
-            return Ok(new { access_token = result.AccessToken });
+            return Ok(new { access_token = result.AccessToken, user });
         }
         else
         {
@@ -94,7 +97,7 @@ public partial class LoginController : ControllerBase
     [HttpPost("api/auth/logout")]
     public ActionResult Logout()
     {
-        Response.Cookies.Delete("token");
+        Response.Cookies.Delete("access_token");
         return Ok();
     }
 }

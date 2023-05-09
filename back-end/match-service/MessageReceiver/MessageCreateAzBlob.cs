@@ -18,6 +18,7 @@ public class MessageCreateAzBlob : IHostedService
     MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
     private IMongoDatabase database;
     private IMongoCollection<MatchModel> collection;
+
     public MessageCreateAzBlob()
     {
         this.database = dbClient.GetDatabase("MatchTender");
@@ -54,11 +55,11 @@ public class MessageCreateAzBlob : IHostedService
             
             MatchModel insertEmptyMatch = new MatchModel{
                 id = user.id,
-                MatchesForUser = new Dictionary<string, List<User>>{
-                    {user.id, new List<User>()}
-                }
+                MatchesForUser = new List<User>()
+                
             };
             await collection.InsertOneAsync(insertEmptyMatch);
+            
             Console.WriteLine($"{user.email}");
             // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(message);
             // if(!await containerClient.ExistsAsync()){
