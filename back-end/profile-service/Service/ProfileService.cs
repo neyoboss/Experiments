@@ -21,8 +21,9 @@ public class ProfileService : IProfileService
     #region AddImageToAzure
     public async Task<string> AddImagesToAzureBlolb(string profileId, IFormFile image)
     {
-        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profileId);
-        BlobClient blobClient = containerClient.GetBlobClient($"{profileId}/{image.FileName}");
+        profileId = profileId.Replace("|", "-");
+        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profileId);        
+        BlobClient blobClient = containerClient.GetBlobClient($"{image.Name}");
         using (var stream = image.OpenReadStream())
         {
             await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = new BlobHttpHeaders { ContentType = image.ContentType } });
@@ -72,7 +73,7 @@ public class ProfileService : IProfileService
             BlobClient blobClient = containerClient.GetBlobClient(item.Name);
             imageUrls.Add(blobClient.Uri.AbsoluteUri);
         }
-       
+
         return imageUrls;
     }
 }

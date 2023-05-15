@@ -25,13 +25,17 @@ export default function Profile({ avatar }) {
         if (imageBlob) {
             const formData = new FormData();
             formData.append("image", imageBlob);
-            formData.append("profileId", user.userId)
+            formData.append("userId", user.userId)
+            console.log(imageBlob.size)
+
             try {
                 const response = await fetch("https://localhost:7282/api/uploadImage", {
                     method: "POST",
-                    body: formData,
+                    body: formData
                 });
+                
                 const data = await response.json();
+
                 setResponseMessage(data.downloadURL);
             } catch (error) {
                 console.error(error);
@@ -54,15 +58,6 @@ export default function Profile({ avatar }) {
         setImageBlob(imageBlob);
     }
 
-
-
-
-
-
-
-
-
-
     useEffect(() => {
         axios.get(`https://localhost:7282/api/profile/${user.userId}`)
             .then(res => {
@@ -74,10 +69,6 @@ export default function Profile({ avatar }) {
 
     return (
         <>
-
-
-
-
             <div>
                 <form className="flex w-full gap-4" onSubmit={handleFileUpload}>
                     <label className="btn inline-flex w-96 gap-2" htmlFor="upload-file">
@@ -102,16 +93,6 @@ export default function Profile({ avatar }) {
                     </div>
                 )}
             </div>
-
-
-
-
-
-
-
-
-
-
 
             <Paper
                 radius="md"

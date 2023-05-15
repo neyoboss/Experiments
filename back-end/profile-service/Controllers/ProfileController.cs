@@ -101,7 +101,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPost("api/uploadImage")]
-    public async Task<ActionResult> UploadImage(string userId, [FromForm] IFormFile image)
+    public async Task<ActionResult<string>> UploadImage([FromForm] string userId, [FromForm] IFormFile image)
     {
         try
         {
@@ -109,16 +109,12 @@ public class ProfileController : ControllerBase
             {
                 return BadRequest("No image uploaded");
             }
+            string imageUrl = await profileService.AddImagesToAzureBlolb(userId, image);
+            return Ok(imageUrl);
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            return BadRequest(ex.Message);
         }
-
-
-
-        string imageUrl = await profileService.AddImagesToAzureBlolb(userId, image);
-
-        return Ok("Image uploaded successfully");
     }
 }
