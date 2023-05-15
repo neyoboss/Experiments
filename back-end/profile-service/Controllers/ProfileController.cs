@@ -110,7 +110,7 @@ public class ProfileController : ControllerBase
                 return BadRequest("No image uploaded");
             }
             string imageUrl = await profileService.AddImagesToAzureBlolb(userId, image);
-            return Ok(imageUrl);
+            return Ok();
         }
         catch (Exception ex)
         {

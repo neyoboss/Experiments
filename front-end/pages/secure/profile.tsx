@@ -114,7 +114,7 @@ export default function Profile({ avatar }) {
                     </Button>
                 </div>
 
-                <div style={{ marginTop: "10px", display: "flex" }}>
+                <div style={{ marginTop: "10px", display: "flex" }} >
                     {images.map((p) => {
                         return (
                             <>

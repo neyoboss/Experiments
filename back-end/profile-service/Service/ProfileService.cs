@@ -22,13 +22,14 @@ public class ProfileService : IProfileService
     public async Task<string> AddImagesToAzureBlolb(string profileId, IFormFile image)
     {
         profileId = profileId.Replace("|", "-");
-        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profileId);        
-        BlobClient blobClient = containerClient.GetBlobClient($"{image.Name}");
+        string imageName = $"{image.FileName}-{Guid.NewGuid()}";
+        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profileId);
+        BlobClient blobClient = containerClient.GetBlobClient(imageName);
         using (var stream = image.OpenReadStream())
         {
             await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = new BlobHttpHeaders { ContentType = image.ContentType } });
         }
-        return blobClient.Uri.ToString();
+        return imageName;
     }
     #endregion
 
@@ -60,12 +61,9 @@ public class ProfileService : IProfileService
 
     public async Task<List<string>> GetImagesForProfile(string id)
     {
-        //var profile = await collection.Find(profile => profile.id == id).FirstOrDefaultAsync();
         id = id.Replace("|", "-");
-        // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profile.id.ToString());
 
         BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(id);
-
 
         List<string> imageUrls = new List<string>();
         await foreach (var item in containerClient.GetBlobsAsync())
@@ -75,5 +73,18 @@ public class ProfileService : IProfileService
         }
 
         return imageUrls;
+    }
+
+    public async Task<string> DeleteImageFromAzure(string profileId, string imageName)
+    {
+        profileId = profileId.Replace("|", "-");
+
+        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profileId);
+
+        BlobClient blobClient = containerClient.GetBlobClient(imageName);
+
+        await blobClient.DeleteAsync();
+
+        return "Image Deleted";
     }
 }
