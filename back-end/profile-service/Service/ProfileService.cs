@@ -19,15 +19,18 @@ public class ProfileService : IProfileService
     }
 
     #region AddImageToAzure
-    public async void AddImagesToAzureBlolb(string profileId, byte[] imageBytes)
+    public async Task<string> AddImagesToAzureBlolb(string profileId, IFormFile image)
     {
         BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profileId);
-        string imageName = Guid.NewGuid().ToString();
-        BlobClient blobClient = containerClient.GetBlobClient(imageName);
-        await blobClient.UploadAsync(new MemoryStream(imageBytes), new BlobHttpHeaders { ContentType = "image/jpeg" });
+        BlobClient blobClient = containerClient.GetBlobClient($"{profileId}/{image.FileName}");
+        using (var stream = image.OpenReadStream())
+        {
+            await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = new BlobHttpHeaders { ContentType = image.ContentType } });
+        }
+        return blobClient.Uri.ToString();
     }
     #endregion
-    
+
 
     #region DeleteProfile
     public async Task<bool> DeleteProfile(string id)
@@ -35,23 +38,8 @@ public class ProfileService : IProfileService
         return (await collection.DeleteOneAsync(profile => profile.id == id)).DeletedCount > 0;
     }
     #endregion
-    
-    public async Task<ProfileModel> GetProfileById(string id)
-    {
-        var profile = await collection.Find(profile => profile.id == id).FirstOrDefaultAsync();
-        id = id.Replace("|","-");
-        // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profile.id.ToString());
-        
-        // List<string> imageUrls = new List<string>();
-        // await foreach (var item in containerClient.GetBlobsAsync())
-        // {
-        //     BlobClient blobClient = containerClient.GetBlobClient(item.Name);
-        //     imageUrls.Add(blobClient.Uri.AbsoluteUri);
-        // }
-        // profile.images = imageUrls;
 
-        return profile;
-    }
+
 
     public async Task<List<ProfileModel>> GetProfiles()
     {
@@ -67,5 +55,24 @@ public class ProfileService : IProfileService
     public async Task<List<ProfileModel>> GetProfileModelsWithoutCurrentId(string currnetProfileId)
     {
         return await collection.Find(profile => currnetProfileId != profile.id).ToListAsync();
+    }
+
+    public async Task<List<string>> GetImagesForProfile(string id)
+    {
+        //var profile = await collection.Find(profile => profile.id == id).FirstOrDefaultAsync();
+        id = id.Replace("|", "-");
+        // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(profile.id.ToString());
+
+        BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(id);
+
+
+        List<string> imageUrls = new List<string>();
+        await foreach (var item in containerClient.GetBlobsAsync())
+        {
+            BlobClient blobClient = containerClient.GetBlobClient(item.Name);
+            imageUrls.Add(blobClient.Uri.AbsoluteUri);
+        }
+       
+        return imageUrls;
     }
 }

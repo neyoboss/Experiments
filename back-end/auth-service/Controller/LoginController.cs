@@ -36,6 +36,8 @@ public partial class LoginController : ControllerBase
             {
                 Email = model.email,
                 Password = model.password,
+                FirstName =  model.firstName,
+                LastName = model.lastName,
                 Connection = "Tender"
             };
 
@@ -98,6 +100,6 @@ public partial class LoginController : ControllerBase
     public ActionResult Logout()
     {
         Response.Cookies.Delete("access_token");
-        return Ok();
+        return Ok("Logged out");
     }
 }

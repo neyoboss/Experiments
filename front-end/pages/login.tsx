@@ -9,9 +9,17 @@ import {
     Container,
     Button,
 } from '@mantine/core';
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "./userContext";
 
 export default function Login() {
+    const context = useContext(UserContext)
+
+    if (context === undefined) {
+        throw new Error('UserContext must be used within a UserProvider');
+    }
+
+    const { user, setUser } = context;
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -27,10 +35,12 @@ export default function Login() {
             withCredentials: true
         })
             .then(res => {
-                console.log(res.data)
+                //console.log(res.data)
                 console.log(res.data['user'])
-                
-                localStorage.setItem("user",JSON.stringify(res.data['user']))
+
+                setUser(res.data['user'])
+                console.log(user)
+                localStorage.setItem("user", JSON.stringify(res.data['user']))
             })
             .catch(error => console.log(error));
     }

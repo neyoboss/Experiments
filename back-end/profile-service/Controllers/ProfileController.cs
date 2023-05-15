@@ -28,12 +28,12 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("api/profile/{id}")]
-    public async Task<ActionResult<ProfileModel>> GetProfile(string id)
+    public async Task<ActionResult<List<string>>> GetProfile(string id)
     {
         try
         {
-            rabbitMQProducer.SendMessage("Profile get by id");
-            return Ok(await profileService.GetProfileById(id));
+            // rabbitMQProducer.SendMessage("Profile get by id");
+            return Ok(await profileService.GetImagesForProfile(id));
         }
         catch (Exception ex)
         {
@@ -100,10 +100,25 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [Authorize]
-    [HttpGet("api/testService")]
-    public async Task<ActionResult> Test()
+    [HttpPost("api/uploadImage")]
+    public async Task<ActionResult> UploadImage(string userId, [FromForm] IFormFile image)
     {
-        return Ok("Tested auth");
+        try
+        {
+            if (image == null || image.Length == 0)
+            {
+                return BadRequest("No image uploaded");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+
+
+        string imageUrl = await profileService.AddImagesToAzureBlolb(userId, image);
+
+        return Ok("Image uploaded successfully");
     }
 }
