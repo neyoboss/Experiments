@@ -52,4 +52,4 @@ jobs:
           context: ./back-end/auth-service
           file: ./back-end/auth-service/Dockerfile
           push: true
-          tags: ${{secrets.ACR_ENDPOINT}}/match-service:latest
+          tags: ${{secrets.ACR_ENDPOINT}}/auth-service:latest
