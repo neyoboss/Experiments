@@ -28,7 +28,7 @@ jobs:
           context: ./back-end/apiGateway
           file: ./back-end/apiGateway/Dockerfile
           push: true
-          tags: ${{secrets.ACR_ENDPOINT}}/api-gateway:linux
+          tags: ${{secrets.ACR_ENDPOINT}}/api-gateway:latest
       -
         name: Build and push profile-service
         uses: docker/build-push-action@v4
