@@ -117,4 +117,18 @@ public class ProfileController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpDelete("api/profile/deleteImage")]
+    public async Task<ActionResult<string>> DeleteImage(string userId, string imageName)
+    {
+        try
+        {
+            await profileService.DeleteImageFromAzure(userId, imageName);
+            return Ok("Image Deleted");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

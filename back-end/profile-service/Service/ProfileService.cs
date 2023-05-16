@@ -59,20 +59,23 @@ public class ProfileService : IProfileService
         return await collection.Find(profile => currnetProfileId != profile.id).ToListAsync();
     }
 
-    public async Task<List<string>> GetImagesForProfile(string id)
+    public async Task<ImagesModel> GetImagesForProfile(string id)
     {
         id = id.Replace("|", "-");
 
         BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(id);
 
-        List<string> imageUrls = new List<string>();
+        ImagesModel images = new ImagesModel();
+        images.ImageName = new List<string>();
+        images.ImageUrl = new List<string>();
         await foreach (var item in containerClient.GetBlobsAsync())
         {
             BlobClient blobClient = containerClient.GetBlobClient(item.Name);
-            imageUrls.Add(blobClient.Uri.AbsoluteUri);
+            images.ImageUrl.Add(blobClient.Uri.AbsoluteUri);
+            images.ImageName.Add(blobClient.Name);
         }
 
-        return imageUrls;
+        return images;
     }
 
     public async Task<string> DeleteImageFromAzure(string profileId, string imageName)

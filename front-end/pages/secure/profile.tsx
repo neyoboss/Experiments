@@ -11,10 +11,7 @@ export default function Profile({ avatar }) {
     }
     const { user } = context;
     const [images, setImages] = useState([]);
-
-
-
-
+    const [imageNames, setImageNames] = useState([]);
 
 
     const [imageBlob, setImageBlob] = useState<Blob | null>(null);
@@ -33,7 +30,7 @@ export default function Profile({ avatar }) {
                     method: "POST",
                     body: formData
                 });
-                
+
                 const data = await response.json();
 
                 setResponseMessage(data.downloadURL);
@@ -58,41 +55,28 @@ export default function Profile({ avatar }) {
         setImageBlob(imageBlob);
     }
 
+    async function deleteImage(userId, imageName) {
+        await axios.delete("https://localhost:7282/api/profile/deleteImage", {
+            params:{
+               userId,
+               imageName 
+            }
+        })
+    }
+
     useEffect(() => {
         axios.get(`https://localhost:7282/api/profile/${user.userId}`)
             .then(res => {
-                console.log(res)
-                setImages(res.data)
+                console.log(res.data)
+                setImages(res.data['imageUrl'])
+                setImageNames(res.data['imageName'])
             })
             .catch(error => console.log(error))
     }, [])
 
     return (
         <>
-            <div>
-                <form className="flex w-full gap-4" onSubmit={handleFileUpload}>
-                    <label className="btn inline-flex w-96 gap-2" htmlFor="upload-file">
 
-                        Choose File
-                        <input
-                            id="upload-file"
-                            className="hidden"
-                            type="file"
-                            accept="image/png, image/jpeg"
-                            onChange={handleFileChange}
-                        />
-                    </label>
-
-                    <button className="btn w-full" type="submit">
-                        Upload
-                    </button>
-                </form>
-                {responseMessage && (
-                    <div className="mt-2 border-2">
-                        <code>{`![alt](${responseMessage})`}</code>
-                    </div>
-                )}
-            </div>
 
             <Paper
                 radius="md"
@@ -109,20 +93,40 @@ export default function Profile({ avatar }) {
                 </Button>
 
                 <div>
-                    <Button color='blue' fullWidth mt="md">
-                        Upload
-                    </Button>
+                    <form className="flex w-full gap-4" onSubmit={handleFileUpload}>
+                        <label className="btn inline-flex w-96 gap-2" htmlFor="upload-file">
+
+                            Choose File
+                            <input
+                                id="upload-file"
+                                className="hidden"
+                                type="file"
+                                accept="image/png, image/jpeg"
+                                onChange={handleFileChange}
+                            />
+                        </label>
+
+                        <Button className="btn w-full" type="submit">
+                            Upload
+                        </Button>
+                    </form>
+                    {responseMessage && (
+                        <div className="mt-2 border-2">
+                            <code>{`![alt](${responseMessage})`}</code>
+                        </div>
+                    )}
                 </div>
 
                 <div style={{ marginTop: "10px", display: "flex" }} >
-                    {images.map((p) => {
+                    {images.map((p, index) => {
                         return (
                             <>
+                                <h6>Image Name : {imageNames[index]}</h6>
                                 <Card style={{ inlineSize: "fit-content", width: "40%" }}>
                                     <Card.Section>
                                         <Image src={p} />
                                     </Card.Section>
-                                    <Button color="red" fullWidth mt="md" radius="md">
+                                    <Button onClick={() => deleteImage(user.userId, imageNames[index])} color="red" fullWidth mt="md" radius="md">
                                         Delete
                                     </Button>
                                 </Card>
