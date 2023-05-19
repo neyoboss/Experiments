@@ -40,8 +40,8 @@ jobs:
 
     - name: Set uo Kubernetes config
       run: |
-        echo "${{ secrets.K8S_CONFIG }}" > ./kubeconfig.yml
-        echo "K8S_CONFIG=$(pwd)/kubeconfig.yml" >> $GITHUB_ENV
+        echo "${{ secrets.KUBECONFIG }}" > ./kubeconfig.yml
+        echo "KUBECONFIG=$(pwd)/kubeconfig.yml" >> $GITHUB_ENV
 
     - name: Deploy to AKS
       run: |
