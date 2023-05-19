@@ -1,0 +1,52 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    
+    - name: Restore, Build, Publish
+      run: |
+        cd back-end/auth-service
+        dotnet restore
+        dotnet build --configuration Release --no-restore
+        dotnet publish --configuration Release --no-build -o ./published
+
+    - name: Login to ACR
+      uses: azure/docker-login@v1
+        with:
+          login-server: ${{secrets.ACR_ENDPOINT}}
+          username: ${{secrets.ACR_USERNAME}}
+          password: ${{secrets.ACR_PASSWORD}}
+
+    - name: Build and push auth-service
+      uses: docker/build-push-action@v4
+        with:
+          context: ./back-end/auth-service
+          file: ./back-end/auth-service/Dockerfile
+          push: true
+          tags: ${{secrets.ACR_ENDPOINT}}/auth-service:latest
+    
+    - name: Set up Azure CLI
+      uses: azure/setup-azure-cli@v1
+
+    - name: Set uo Kubernetes config
+      run: |
+        echo "${{ secrets.K8S_CONFIG }}" > ./kubeconfig.yml
+        echo "K8S_CONFIG=$(pwd)/kubeconfig.yml" >> $GITHUB_ENV
+
+    - name: Deploy to AKS
+      run: |
+        cd ./deployment
+        kubectl apply -f auth-service-deploy.yml
