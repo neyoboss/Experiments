@@ -45,4 +45,4 @@ jobs:
 
     - name: Deploy to AKS
       run: |
-        kubectl apply -f ./deployment/match-service-deploy.yml
+        kubectl apply -f ./deployment/match-service.yml
