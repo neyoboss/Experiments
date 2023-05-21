@@ -28,6 +28,7 @@
         {
             "DownstreamPathTemplate": "/api/auth/{everything}",
             "UpstreamPathTemplate": "/api/auth/{everything}",
+            "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
               {
