@@ -1,4 +1,4 @@
-name: CI/CD
+name: Profile-Service-Deploy
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
     
     - name: Restore, Build, Publish
       run: |
-        cd back-end/auth-service
+        cd back-end/profile-service
         dotnet restore
         dotnet build --configuration Release --no-restore
         dotnet publish --configuration Release --no-build -o ./published
@@ -30,13 +30,13 @@ jobs:
           username: ${{secrets.ACR_USERNAME}}
           password: ${{secrets.ACR_PASSWORD}}
 
-    - name: Build and push auth-service
+    - name: Build and push profile-service
       uses: docker/build-push-action@v4
       with:
-          context: ./back-end/auth-service
-          file: ./back-end/auth-service/Dockerfile
+          context: ./back-end/profile-service
+          file: ./back-end/profile-service/Dockerfile
           push: true
-          tags: ${{secrets.ACR_ENDPOINT}}/auth-service:latest
+          tags: ${{secrets.ACR_ENDPOINT}}/profile-service:latest
 
     - name: Set uo Kubernetes config
       run: |
@@ -45,4 +45,4 @@ jobs:
 
     - name: Deploy to AKS
       run: |
-        kubectl apply -f ./deployment/auth-service-deploy.yml
+        kubectl apply -f ./deployment/profile-service-deploy.yml

@@ -8,8 +8,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    - name: Set uo Kubernetes config
+    steps:
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Set up Kubernetes config
       run: |
         echo "${{ secrets.KUBECONFIG }}" > ./kubeconfig.yml
         echo "KUBECONFIG=$(pwd)/kubeconfig.yml" >> $GITHUB_ENV
