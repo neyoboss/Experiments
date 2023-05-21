@@ -1,0 +1,48 @@
+name: Gateway-Deploy
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    
+    - name: Restore, Build, Publish
+      run: |
+        cd back-end/apiGateway
+        dotnet restore
+        dotnet build --configuration Release --no-restore
+        dotnet publish --configuration Release --no-build -o ./published
+
+    - name: Login to ACR
+      uses: azure/docker-login@v1
+      with:
+          login-server: ${{secrets.ACR_ENDPOINT}}
+          username: ${{secrets.ACR_USERNAME}}
+          password: ${{secrets.ACR_PASSWORD}}
+
+    - name: Build and push apiGateway
+      uses: docker/build-push-action@v4
+      with:
+          context: ./back-end/apiGateway
+          file: ./back-end/apiGateway/Dockerfile
+          push: true
+          tags: ${{secrets.ACR_ENDPOINT}}/api-gateway:latest
+
+    - name: Set uo Kubernetes config
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" > ./kubeconfig.yml
+        echo "KUBECONFIG=$(pwd)/kubeconfig.yml" >> $GITHUB_ENV
+
+    - name: Deploy to AKS
+      run: |
+        kubectl apply -f ./deployment/apiGatewaut-deploy.yml
