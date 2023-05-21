@@ -41,12 +41,12 @@ public partial class LoginController : ControllerBase
                 Connection = "Tender"
             };
 
-            // var createUser = await auth0ManageClient.Users.CreateAsync(auth0UserReq);
+            var createUser = await auth0ManageClient.Users.CreateAsync(auth0UserReq);
 
             var user = new LoginModel
             {
-                // UserId = createUser.UserId,
-                id = "123-asd",
+                id = createUser.UserId,
+                // id = "123-asd",
                 email = model.email,
                 firstName = model.firstName,
                 lastName = model.lastName
@@ -54,7 +54,7 @@ public partial class LoginController : ControllerBase
 
             rabbitMqProducer.SendMessage(user, "blob", "AzureBlobCreation");
 
-            // await collection.InsertOneAsync(user);
+            await collection.InsertOneAsync(user);
             return Ok("user created");
         }
         catch (Exception ex)
