@@ -25,14 +25,14 @@ public class MessageCreateAzBlob : IHostedService
         this.collection = database.GetCollection<MatchModel>("Match");
 
         factory = new ConnectionFactory();
-        factory.Uri = new Uri("amqp://localhost:5672");
+        factory.Uri = new Uri("amqp://rabbitmq:5672");
         factory.ClientProvidedName = "Tender/BlobCreate";
 
         connection = factory.CreateConnection();
         channel = connection.CreateModel();
 
         channel.QueueDeclare("AzureBlobCreation",
-        durable: false,
+        durable: true,
         exclusive: false,
         autoDelete: false,
         arguments: null);
@@ -56,15 +56,14 @@ public class MessageCreateAzBlob : IHostedService
             MatchModel insertEmptyMatch = new MatchModel{
                 id = user.id,
                 MatchesForUser = new List<User>()
-                
             };
             await collection.InsertOneAsync(insertEmptyMatch);
             
-            Console.WriteLine($"{user.email}");
-            // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(message);
-            // if(!await containerClient.ExistsAsync()){
-            //     await containerClient.CreateAsync(PublicAccessType.BlobContainer);
-            // }
+            user.id = user.id.Replace("|","-");
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(user.id);
+            if(!await containerClient.ExistsAsync()){
+                await containerClient.CreateAsync(PublicAccessType.BlobContainer);
+            }
 
             Console.WriteLine($"Id: {message}");
 
