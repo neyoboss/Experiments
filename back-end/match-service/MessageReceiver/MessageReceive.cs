@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+
 public class MessageReceive : IHostedService
 {
     MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
@@ -26,7 +27,7 @@ public class MessageReceive : IHostedService
         this.collection = database.GetCollection<MatchModel>("Match");
 
         var factory = new ConnectionFactory();
-        factory.Uri = new Uri("amqp://localhost:5672");
+        factory.Uri = new Uri("amqp://rabbitmq:5672");
         factory.ClientProvidedName = "Tender/Match-Service";
 
         connection = factory.CreateConnection();
