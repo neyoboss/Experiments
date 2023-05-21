@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ocelot-gateway
+  name: api-gateway
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ocelot-gateway
+      app: api-gateway
   template:
     metadata:
       labels:
-        app: ocelot-gateway
+        app: api-gateway
     spec:
       containers:
         - name: api-gateway
@@ -21,10 +21,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ocelot-gateway
+  name: api-gateway
 spec:
   selector:
-    app: ocelot-gateway
+    app: api-gateway
   ports:
     - protocol: TCP
       port: 80

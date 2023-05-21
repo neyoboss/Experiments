@@ -1,0 +1,23 @@
+name: RabbitMq
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Set up Kubernetes config
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" > ./kubeconfig.yml
+        echo "KUBECONFIG=$(pwd)/kubeconfig.yml" >> $GITHUB_ENV
+
+    - name: Deploy to AKS
+      run: |
+        kubectl apply -f ./deployment/rabbit-mq-deploy.yml
