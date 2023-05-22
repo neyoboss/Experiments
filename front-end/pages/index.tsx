@@ -1,6 +1,5 @@
 import { Inter } from 'next/font/google'
-import { Button } from '@mantine/core';
-import Carousel from './components/carousel';
+import Navbar from './components/navbar';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -8,6 +7,7 @@ export default function Home() {
 
   return (
     <>
+    <Navbar />
       <h1>Home</h1>
     </>
   );
