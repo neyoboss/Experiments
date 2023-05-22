@@ -20,3 +20,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       </UserContext.Provider>
     );
   };
+
+export default function nothinf(){
+  
+}
