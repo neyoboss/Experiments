@@ -11,7 +11,8 @@ interface UserProviderProps {
   children: ReactNode;
 }
 
-export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+
   const [user, setUser] = useState<any>(null);
 
   return (
@@ -21,10 +22,4 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   );
 };
 
-export default function nothinf() {
-  return (
-    <>
-      <h1>AAAAA</h1>
-    </>
-  )
-}
+export default UserProvider;
