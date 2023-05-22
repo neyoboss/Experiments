@@ -11,6 +11,7 @@ import {
 } from '@mantine/core';
 import { useContext, useState } from "react";
 import { UserContext } from "./userContext";
+import Link from "next/link";
 
 export default function Login() {
     const context = useContext(UserContext)
@@ -54,7 +55,7 @@ export default function Login() {
                 <Text color="dimmed" size="sm" align="center" mt={5}>
                     Do not have an account yet?{' '}
                     <Anchor size="sm" component="button">
-                        <a href="/register">Create account</a>
+                        <Link href="/register">Create account</Link>
                     </Anchor>
                 </Text>
 
