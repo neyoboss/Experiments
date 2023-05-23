@@ -13,12 +13,14 @@ import {
     Center
 } from '@mantine/core';
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const router = useRouter();
 
     function register() {
         axios.post('https://localhost:7280/api/auth/register', {
@@ -29,6 +31,7 @@ export default function Register() {
         })
             .then(res => {
                 console.log(res.data)
+                router.push("/login")
             })
             .catch(error => console.log(error));
     }

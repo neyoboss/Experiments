@@ -54,9 +54,9 @@ public class ProfileService : IProfileService
         return updatedProfileModel;
     }
 
-    public async Task<List<ProfileModel>> GetProfileModelsWithoutCurrentId(string currnetProfileId)
+    public async Task<List<ProfileModel>> GetProfileModelsWithoutCurrentId(string id)
     {
-        return await collection.Find(profile => currnetProfileId != profile.id).ToListAsync();
+        return await collection.Find(profile => id != profile.id).ToListAsync();
     }
 
     public async Task<ImagesModel> GetImagesForProfile(string id)

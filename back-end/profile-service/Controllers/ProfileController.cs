@@ -70,12 +70,12 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("api/profile/getProfilesWithoutCurrent/{currentProfileId}")]
-    public async Task<ActionResult<List<ProfileModel>>> GetProfilesWithoutCurrent(string currentProfileId)
+    [HttpGet("api/profile/getProfilesWithoutCurrent")]
+    public async Task<ActionResult<List<ProfileModel>>> GetProfilesWithoutCurrent([FromHeader]string userId)
     {
         try
         {
-            return Ok(await profileService.GetProfileModelsWithoutCurrentId(currentProfileId));
+            return Ok(await profileService.GetProfileModelsWithoutCurrentId(userId));
         }
         catch (Exception e)
         {
@@ -100,7 +100,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpPost("api/uploadImage")]
+    [HttpPost("api/profile/uploadImage")]
     public async Task<ActionResult<string>> UploadImage([FromForm] string userId, [FromForm] IFormFile image)
     {
         try

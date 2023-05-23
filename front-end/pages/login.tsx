@@ -10,17 +10,16 @@ import {
     Button,
 } from '@mantine/core';
 import { useContext, useState } from "react";
-import { UserContext } from "./userContext";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import  {userAtom}  from "../utils/userAtom";
+import { useAtom } from "jotai";
 
 export default function Login() {
-    const context = useContext(UserContext)
+    
+    const router = useRouter();
 
-    if (context === undefined) {
-        throw new Error('UserContext must be used within a UserProvider');
-    }
-
-    const { user, setUser } = context;
+    const [user, setUser] = useAtom(userAtom);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -36,12 +35,11 @@ export default function Login() {
             withCredentials: true
         })
             .then(res => {
-                //console.log(res.data)
                 console.log(res.data['user'])
-
-                setUser(res.data['user'])
-                console.log(user)
-                localStorage.setItem("user", JSON.stringify(res.data['user']))
+                const userData = res.data['user'];
+                setUser(userData);
+                localStorage.setItem('user', JSON.stringify(userData));
+                router.push("/");
             })
             .catch(error => console.log(error));
     }

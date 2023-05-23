@@ -95,7 +95,7 @@ public partial class LoginController : ControllerBase
         }
     }
 
-    [Authorize]
+    
     [HttpPost("api/auth/logout")]
     public ActionResult Logout()
     {

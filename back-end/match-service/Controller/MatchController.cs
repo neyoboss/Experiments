@@ -9,25 +9,43 @@ public class MatchController : ControllerBase
         this.matchService = matchService;
     }
 
-    [HttpPost("match/update")]
-    public async Task<ActionResult> UpdateMatch([FromBody] User user)
+    [HttpPost("matches/update")]
+    public async Task<ActionResult> UpdateMatch()
     {
-        
-        User send = new User{
-            id = user.id,
-            email = user.email,
-            firstName = user.firstName,
-            lastName = user.lastName
-        };
+
+
         try
         {
-            await matchService.CreateUpdateMatch("123-asd", send);
+            User loggedUser = new User
+            {
+                id = "auth0|64640c7bc70de2f8085b93fd",
+                email = "neykoTest@gmail.com",
+                firstName = "Neyko",
+                lastName = "Neykov"
+            };
+
+            User user = new User
+            {
+                id = "auth0|646cff402edf0713b92ea83e",
+                email = "asd@gmail.com",
+                firstName = "Jef",
+                lastName = "Ma"
+            };
+
+            await matchService.CreateUpdateMatch(loggedUser, user);
+
+            return Ok("User updated");
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            return BadRequest(ex.Message);
         }
 
-        return Ok("User updated");
+    }
+
+    public class UserBody
+    {
+        public User loggedUser { get; set; }
+        public User user { get; set; }
     }
 }

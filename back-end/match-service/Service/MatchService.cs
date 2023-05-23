@@ -6,24 +6,35 @@ public class MatchService : IMatchService
     MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
     private IMongoDatabase database;
     private IMongoCollection<MatchModel> collection;
-    
+
     public MatchService()
     {
         this.database = dbClient.GetDatabase("MatchTender");
         this.collection = database.GetCollection<MatchModel>("Match");
     }
 
-    public async Task CreateUpdateMatch(string id, User user)
+    public async Task CreateUpdateMatch(User loggedUser, User user)
     {
-        var filter = Builders<MatchModel>.Filter.Eq("id", id);
-        var matchModel = await collection.Find(m => m.id == id).FirstOrDefaultAsync();
+        var loggedFilter = Builders<MatchModel>.Filter.Eq("id", loggedUser.id);
+        var loggedMatchModel = await collection.Find(m => m.id == loggedUser.id).FirstOrDefaultAsync();
 
-        if (matchModel != null)
+
+        var otherFilter = Builders<MatchModel>.Filter.Eq("id", user.id);
+        var otherMatchModel = await collection.Find(m => m.id == user.id).FirstOrDefaultAsync();
+
+
+        if (loggedMatchModel != null)
         {
-            matchModel.MatchesForUser.Add(user);
-            
-            var update = Builders<MatchModel>.Update.Set("MatchesForUser", matchModel.MatchesForUser);
-            await collection.UpdateOneAsync(filter, update);
+            loggedMatchModel.MatchesForUser.Add(user);
+
+            otherMatchModel.MatchesForUser.Add(loggedUser);
+
+            var update = Builders<MatchModel>.Update.Set("MatchesForUser", loggedMatchModel.MatchesForUser);
+            await collection.UpdateOneAsync(loggedFilter, update);
+
+            var otheUpdate=Builders<MatchModel>.Update.Set("MatchesForUser", otherMatchModel.MatchesForUser);
+            await collection.UpdateOneAsync(otherFilter, otheUpdate);
+
         }
         else
         {

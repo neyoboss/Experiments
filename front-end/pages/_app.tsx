@@ -1,7 +1,6 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { MantineProvider } from '@mantine/core';
-import  UserProvider  from './userContext';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
@@ -14,10 +13,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
           colorScheme: 'light',
         }}
       >
-        <UserProvider>
-          
           <Component {...pageProps} />
-        </UserProvider>
       </MantineProvider>
     </>
   )

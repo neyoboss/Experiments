@@ -25,7 +25,7 @@ public class MessageCreateAzBlob : IHostedService
         this.collection = database.GetCollection<MatchModel>("Match");
 
         factory = new ConnectionFactory();
-        factory.Uri = new Uri("amqp://rabbitmq:5672");
+        factory.Uri = new Uri("amqp://localhost:5672");
         factory.ClientProvidedName = "Tender/BlobCreate";
 
         connection = factory.CreateConnection();

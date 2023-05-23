@@ -1,4 +1,4 @@
 public interface IMatchService
 {
-    Task CreateUpdateMatch(string id, User user);
+    Task CreateUpdateMatch(User loggedUser, User user);
 }

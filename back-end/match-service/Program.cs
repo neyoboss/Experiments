@@ -7,7 +7,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMatchService, MatchService>();
-builder.Services.AddHostedService<MessageReceive>();
 builder.Services.AddHostedService<MessageCreateAzBlob>();
 
 var app = builder.Build();

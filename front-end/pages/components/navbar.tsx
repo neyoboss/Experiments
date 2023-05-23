@@ -1,8 +1,13 @@
 import { Button } from '@mantine/core';
 import axios from 'axios';
 import Link from 'next/link';
+import { useAtom } from 'jotai';
+import  {userAtom}  from '../../utils/userAtom';
+import { useRouter } from 'next/router';
+
 
 export default function Navbar() {
+  const router = useRouter();
 
   const logout = async () => {
     await axios.post('https://localhost:7280/api/auth/logout', {}, {
@@ -13,8 +18,7 @@ export default function Navbar() {
       withCredentials: true
     })
       .then(res => {
-        // clear user data from context and localStorage
-        // setUser(null);
+        router.push('../login');
         localStorage.removeItem("user");
       })
       .catch(error => console.log(error));

@@ -1,21 +1,36 @@
 import { Card, Avatar, Text, Button, Paper, Image } from '@mantine/core';
-import { UserContext } from '../userContext';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import Navbar from '../components/navbar';
+import { useAtom } from 'jotai';
+import {userAtom}  from '../../utils/userAtom';
 
-export default function Profile({ avatar }) {
-    const context = useContext(UserContext);
-    // handle if context does not exist
-    if (context === undefined) {
-        throw new Error('UserContext must be used within a UserProvider');
-    }
-    const { user } = context;
+
+export default function Profile() {
+
     const [images, setImages] = useState([]);
     const [imageNames, setImageNames] = useState([]);
 
 
     const [imageBlob, setImageBlob] = useState<Blob | null>(null);
     const [responseMessage, setResponseMessage] = useState("");
+
+    const [user] = useAtom<any>(userAtom)
+
+    // if (user === null) {
+    //     return <div>Banica</div>;
+    // }
+
+
+    useEffect(() => {
+        axios.get(`https://localhost:7282/api/profile/${user.userId}`)
+            .then(res => {
+                console.log(res.data)
+                setImages(res.data['imageUrl'])
+                setImageNames(res.data['imageName'])
+            })
+            .catch(error => console.log(error))
+    }, [])
 
     async function handleFileUpload(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -57,33 +72,25 @@ export default function Profile({ avatar }) {
 
     async function deleteImage(userId, imageName) {
         await axios.delete("https://localhost:7282/api/profile/deleteImage", {
-            params:{
-               userId,
-               imageName 
+            params: {
+                userId,
+                imageName
             }
         })
     }
 
-    useEffect(() => {
-        axios.get(`https://localhost:7282/api/profile/${user.userId}`)
-            .then(res => {
-                console.log(res.data)
-                setImages(res.data['imageUrl'])
-                setImageNames(res.data['imageName'])
-            })
-            .catch(error => console.log(error))
-    }, [])
+
 
     return (
         <>
-
+            <Navbar />
 
             <Paper
                 radius="md"
                 withBorder
                 p="lg"
             >
-                <Avatar src={avatar} size={120} radius={120} mx="auto" />
+                <Avatar src={images[1]} size={120} radius={120} mx="auto" />
                 <Text ta="center" fz="lg" weight={500} mt="md">
                     {user ? (<>{user.email}</>) : (<><h1>No user</h1></>)}
                 </Text>
@@ -121,8 +128,7 @@ export default function Profile({ avatar }) {
                     {images.map((p, index) => {
                         return (
                             <>
-                                <h6>Image Name : {imageNames[index]}</h6>
-                                <Card style={{ inlineSize: "fit-content", width: "40%" }}>
+                                <Card style={{ inlineSize: "fit-content", width: "40%" }} key={imageNames[index]}>
                                     <Card.Section>
                                         <Image src={p} />
                                     </Card.Section>
