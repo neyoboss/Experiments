@@ -42,6 +42,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"neyoboss_TenderProject" /o:"neyoboss" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.sources="back-end/profile-service" /d:sonar.verbose=true
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"neyoboss_TenderProject" /o:"neyoboss" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.sources="back-end/profile-service,back-end/match-service,back-end/auth-service"
           dotnet build back-end\profile-service\profile-service.csproj
+          dotnet build back-end\match-service\match-service.csproj
+          dotnet build back-end\auth-service\auth-service.csproj
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
