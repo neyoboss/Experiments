@@ -1,9 +1,13 @@
+
+# on:
+#   push:
+#     branches:
+#       - "master"
+
 name: Match-Service-Deploy
 
 on:
-  push:
-    branches:
-      - "master"
+  workflow_dispatch:
 
 jobs:
   build:
