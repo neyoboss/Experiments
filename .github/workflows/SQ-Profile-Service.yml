@@ -45,4 +45,6 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"neyoboss_TenderProject" /o:"neyoboss" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           cd back-end/profile-service
           dotnet build
+          cd ..
+          cd ..
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
