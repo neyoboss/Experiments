@@ -14,9 +14,12 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: tendercontainers.azurecr.io/auth-service:latest
+          image: neykneyk/auth-service:latest
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
 ---
 apiVersion: v1
 kind: Service
@@ -29,4 +32,17 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: ClusterIP
+  type: NodePort
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: auth-service
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: auth-service
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50

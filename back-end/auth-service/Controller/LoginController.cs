@@ -95,6 +95,11 @@ public partial class LoginController : ControllerBase
         }
     }
 
+    [HttpGet("api/auth/getHealth")]
+    public ActionResult GetHealth(){
+        Response.Headers.Add("Cache-Control","public, max-age=3600");
+        return Ok("Hallooooo");
+    }
     
     [HttpPost("api/auth/logout")]
     public ActionResult Logout()
