@@ -4,13 +4,13 @@ import { check, sleep } from "k6";
 export let options = {
   stages: [
     { duration: "10s", target: 100 },
+    { duration: "10s", target: 400 },
     { duration: "10s", target: 600 },
     { duration: "10s", target: 1000 },
-    { duration: "10s", target: 10000 },
   ],
 };
 
-const BASE_URL = "http://127.0.0.1:55942/api/auth";
+const BASE_URL = "http://127.0.0.1:62099/api/auth";
 
 const ENDPOINTS = ["/getHealth"];
 
@@ -24,5 +24,5 @@ export default function () {
     }); 
   }
 
-  sleep(1);
+  sleep(10);
 }
