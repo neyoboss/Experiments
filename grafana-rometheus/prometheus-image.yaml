@@ -1,0 +1,7 @@
+FROM prom/prometheus
+
+COPY prometheus.yaml ./prometheus.yaml
+
+EXPOSE 9090
+
+CMD [ "--config.file=/etc/prometheus/prometheus.yml" ]

@@ -8,7 +8,7 @@ public class RabbitMqProducer : IRabbitMqProducer
 
     public RabbitMqProducer()
     {
-        factory.Uri = new Uri("amqp://localhost:5672");
+        factory.Uri = new Uri("amqp://rabbitmq:5672");
         factory.ClientProvidedName = "Tender/Auth-Service";
     }
 

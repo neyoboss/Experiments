@@ -1,6 +1,4 @@
-
 using Auth0.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRabbitMqProducer, RabbitMqProducer>();
 
+
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
@@ -22,9 +22,9 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-    policy =>
+    builder =>
     {
-        policy.WithOrigins("http://localhost:3000").AllowCredentials().AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed((allowed) => true);
+        builder.WithOrigins("http://localhost:3000").AllowCredentials().AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed((allowed) => true);
     });
 });
 
@@ -39,10 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseHttpsRedirection();
-
-app.UseCookiePolicy();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
