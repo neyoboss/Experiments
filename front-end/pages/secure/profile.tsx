@@ -41,7 +41,7 @@ export default function Profile() {
             console.log(imageBlob.size)
 
             try {
-                const response = await fetch("https://localhost:7282/api/uploadImage", {
+                const response = await fetch("https://localhost:7282/api/profile/uploadImage", {
                     method: "POST",
                     body: formData
                 });

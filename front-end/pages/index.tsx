@@ -2,7 +2,7 @@ import Navbar from './components/navbar';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAtom } from 'jotai';
-import {userAtom}  from '../utils/userAtom';
+import { userAtom } from '../utils/userAtom';
 import { Card, Text, Button, Group, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import User from './components/user';
@@ -32,14 +32,14 @@ export default function Home() {
             userId: user.userId
           }
         });
-  
+
         setUsers(response.data);
         console.log(response.data);
       } catch (error) {
         console.log(error);
       }
     }
-  
+
     fetchData();
   }, [])
 
@@ -52,7 +52,7 @@ export default function Home() {
         {users.map((u) => {
           return (
             <>
-              <Card shadow="sm" padding="lg" radius="md" withBorder key={u.userId}>
+              <Card key={u.id} shadow="sm" padding="lg" radius="md" withBorder >
 
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                   <Group position="apart" mt="md" mb="xs">
@@ -60,7 +60,7 @@ export default function Home() {
                   </Group>
 
                   <Modal opened={opened} onClose={close}>
-                   {user? <User props={user} /> : <div>Nema</div>} 
+                    {u ? <User props={u} /> : <div>Nema</div>}
                   </Modal>
 
                   <Button onClick={open} variant="light" color="blue" mt="md" radius="md">

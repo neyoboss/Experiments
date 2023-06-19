@@ -41,4 +41,14 @@ public class MatchService : IMatchService
             Console.WriteLine("kur nema");
         }
     }
+
+    public async Task<List<string>> ids(string id)
+    {
+        List<string> userIds = new List<string>();
+        var profile = await collection.Find(u => u.id == id).FirstOrDefaultAsync();
+        foreach(User user in profile.MatchesForUser){
+            userIds.Add(user.id);
+        }
+        return userIds;
+    }
 }

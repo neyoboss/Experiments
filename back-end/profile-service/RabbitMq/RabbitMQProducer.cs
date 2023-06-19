@@ -7,7 +7,7 @@ public class RabbitMQProducer : IRabbitMQProducer
     public void SendMessage<T>(T message)
     {
         ConnectionFactory factory = new();
-        factory.Uri = new Uri("amqp://rabbitmq:5672");
+        factory.Uri = new Uri("amqp://localhost:5672");
         factory.ClientProvidedName = "Tender/Profile-Service";
 
         var connection = factory.CreateConnection();

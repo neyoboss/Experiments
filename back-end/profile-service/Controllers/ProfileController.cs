@@ -1,11 +1,15 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Runtime.Caching;
+
 
 [ApiController]
 public class ProfileController : ControllerBase
 {
     IProfileService profileService;
     IRabbitMQProducer rabbitMQProducer;
+
+    private static readonly MemoryCache cache = MemoryCache.Default;
 
     public ProfileController(IProfileService profileService, IRabbitMQProducer rabbitMQProducer)
     {
@@ -32,8 +36,15 @@ public class ProfileController : ControllerBase
     {
         try
         {
+            if (cache.Contains(id))
+            {
+                return Ok(cache.Get(id));
+            }
+
             // rabbitMQProducer.SendMessage("Profile get by id");
-            return Ok(await profileService.GetImagesForProfile(id));
+            var images = await profileService.GetImagesForProfile(id);
+            cache.Add(id, images, DateTimeOffset.UtcNow.AddMinutes(10));
+            return Ok(images);
         }
         catch (Exception ex)
         {
@@ -71,7 +82,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("api/profile/getProfilesWithoutCurrent")]
-    public async Task<ActionResult<List<ProfileModel>>> GetProfilesWithoutCurrent([FromHeader]string userId)
+    public async Task<ActionResult<List<ProfileModel>>> GetProfilesWithoutCurrent([FromHeader] string userId)
     {
         try
         {
@@ -131,4 +142,39 @@ public class ProfileController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpPost("api/profile/createMatch")]
+    public async Task<ActionResult> CreateMatch([FromBody] MatchCreationModel matchCreationModel)
+    {
+        string targetService = "https://localhost:7080/matches/update";
+        string payloadJson = JsonConvert.SerializeObject(matchCreationModel);
+
+        // Create an instance of HttpClient
+        using (HttpClient httpClient = new HttpClient())
+        {
+            // Create a StringContent object with the JSON payload
+            StringContent payload = new StringContent(payloadJson, encoding: System.Text.Encoding.UTF8, "application/json");
+
+            // Send the POST request to the target service
+            HttpResponseMessage response = await httpClient.PostAsync(targetService, payload);
+
+            // Handle the response from the target service as needed
+            if (response.IsSuccessStatusCode)
+            {
+                // The request was successful
+                return Ok();
+            }
+            else
+            {
+                // The request failed
+                return StatusCode((int)response.StatusCode);
+            }
+        }
+    }
+    public class MatchCreationModel
+    {
+        public ProfileModel LoggedUser { get; set; }
+        public ProfileModel User { get; set; }
+    }
 }
+

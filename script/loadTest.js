@@ -10,7 +10,7 @@ export let options = {
   ],
 };
 
-const BASE_URL = "http://127.0.0.1:62099/api/auth";
+const BASE_URL = "http://127.0.0.1:62619/api/auth";
 
 const ENDPOINTS = ["/getHealth"];
 
@@ -24,5 +24,5 @@ export default function () {
     }); 
   }
 
-  sleep(10);
+  sleep(5);
 }
