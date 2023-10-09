@@ -7,3 +7,4 @@ This was just an experimentation with:
 - Auth0
 - Github Actions
 - Kubernetes
+- Grafana and Prometheus
