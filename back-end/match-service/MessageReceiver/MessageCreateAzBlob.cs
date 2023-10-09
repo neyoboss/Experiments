@@ -12,17 +12,17 @@ public class MessageCreateAzBlob : IHostedService
     private readonly IConnection connection;
     private readonly IModel channel;
     private readonly ConnectionFactory factory;
-    BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=tenderblob;AccountKey=h+mQabKquq6HhmW/CVKKnUG1l5iUjeiTEHys06y4wXqiyltbQz/Pph3hxHmGJRaxDYZ4rPeaVP/i+ASti3NO0A==;EndpointSuffix=core.windows.net");
+    BlobServiceClient blobServiceClient = new BlobServiceClient("");
 
 
-    MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
+    MongoClient dbClient = new MongoClient("");
     private IMongoDatabase database;
     private IMongoCollection<MatchModel> collection;
 
     public MessageCreateAzBlob()
     {
-        this.database = dbClient.GetDatabase("MatchTender");
-        this.collection = database.GetCollection<MatchModel>("Match");
+        this.database = dbClient.GetDatabase("");
+        this.collection = database.GetCollection<MatchModel>("");
 
         factory = new ConnectionFactory();
         factory.Uri = new Uri("amqp://localhost:5672");
