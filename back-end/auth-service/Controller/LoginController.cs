@@ -9,8 +9,8 @@ using MongoDB.Driver;
 [ApiController]
 public partial class LoginController : ControllerBase
 {
-    private readonly AuthenticationApiClient _auth0Client = new AuthenticationApiClient(new Uri("https://dev-0ck6l5pnflrq01jd.eu.auth0.com"));
-    MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
+    private readonly AuthenticationApiClient _auth0Client = new AuthenticationApiClient(new Uri(""));
+    MongoClient dbClient = new MongoClient("");
     private readonly IConfiguration config;
     private IMongoDatabase database;
     private IMongoCollection<LoginModel> collection;
