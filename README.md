@@ -5,4 +5,5 @@ This was just an experimentation with:
 - RabbitMq
 - Azure Blob Storage and Azure Container Registry
 - Auth0
-- CI/CD
+- Github Actions
+- Kubernetes
