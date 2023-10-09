@@ -3,7 +3,7 @@ using MongoDB.Driver;
 
 public class MatchService : IMatchService
 {
-    MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
+    MongoClient dbClient = new MongoClient("");
     private IMongoDatabase database;
     private IMongoCollection<MatchModel> collection;
 
