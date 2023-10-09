@@ -5,12 +5,12 @@ using Auth0.AuthenticationApi;
 
 public class ProfileService : IProfileService
 {
-    private readonly AuthenticationApiClient _auth0Client = new AuthenticationApiClient(new Uri("https://dev-0ck6l5pnflrq01jd.eu.auth0.com"));
-    MongoClient dbClient = new MongoClient("mongodb+srv://neykneyk1:081100neyko@tender.55ndihf.mongodb.net/test");
+    private readonly AuthenticationApiClient _auth0Client = new AuthenticationApiClient(new Uri(""));
+    MongoClient dbClient = new MongoClient("");
     private IMongoDatabase database;
     private IMongoCollection<ProfileModel> collection;
 
-    BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=tenderblob;AccountKey=h+mQabKquq6HhmW/CVKKnUG1l5iUjeiTEHys06y4wXqiyltbQz/Pph3hxHmGJRaxDYZ4rPeaVP/i+ASti3NO0A==;EndpointSuffix=core.windows.net");
+    BlobServiceClient blobServiceClient = new BlobServiceClient("");
 
     public ProfileService()
     {
